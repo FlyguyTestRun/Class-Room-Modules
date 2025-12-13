@@ -32,6 +32,7 @@ Bryan Shaw - Building as demonstration of RAG architecture and LLM integration s
 
 ## Vision: Biblical Personas as Sub-Agents
 One generic "Gentle Father" 
+
 New Testament Voices:
 
 Paul - Theologian, grace doctor, former persecutor (Romans, Galatians, Ephesians, etc.)
