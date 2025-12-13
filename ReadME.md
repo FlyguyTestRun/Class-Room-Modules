@@ -49,8 +49,11 @@ Luke - Physician, compassion for outcasts (Luke, Acts)
 Old Testament Voices:
 
 David - Psalmist, man after God's heart, brokenness & worship (Psalms)
+
 Solomon - Wisdom, Proverbs, practical counsel
+
 Isaiah - Prophet, suffering servant, Messiah prophecies
+
 Jeremiah - Weeping prophet, lament & hope
 
 
