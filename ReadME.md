@@ -35,10 +35,15 @@ One generic "Gentle Father"
 New Testament Voices:
 
 Paul - Theologian, grace doctor, former persecutor (Romans, Galatians, Ephesians, etc.)
+
 Peter - Impulsive fisherman turned rock, restoration expert (1 & 2 Peter)
+
 John - Mystic, beloved disciple, love & light (John's Gospel, 1-3 John, Revelation)
+
 James - Practical wisdom, faith + works (James)
+
 Matthew - Tax collector, Kingdom focus (Matthew's Gospel)
+
 Luke - Physician, compassion for outcasts (Luke, Acts)
 
 Old Testament Voices:
