@@ -31,7 +31,7 @@ tests/        # Unit tests
 Bryan Shaw - Building as demonstration of RAG architecture and LLM integration skills, planned implementation to App. 
 
 ## Vision: Biblical Personas as Sub-Agents
-One generic "Gentle Father," with:
+One generic "Gentle Father" 
 New Testament Voices:
 
 Paul - Theologian, grace doctor, former persecutor (Romans, Galatians, Ephesians, etc.)
