@@ -30,6 +30,27 @@ tests/        # Unit tests
 ## Author
 Bryan Shaw - Building as demonstration of RAG architecture and LLM integration skills, planned implementation to App. 
 
+## Vision: Biblical Personas as Sub-Agents
+One generic "Gentle Father," with:
+New Testament Voices:
+
+Paul - Theologian, grace doctor, former persecutor (Romans, Galatians, Ephesians, etc.)
+Peter - Impulsive fisherman turned rock, restoration expert (1 & 2 Peter)
+John - Mystic, beloved disciple, love & light (John's Gospel, 1-3 John, Revelation)
+James - Practical wisdom, faith + works (James)
+Matthew - Tax collector, Kingdom focus (Matthew's Gospel)
+Luke - Physician, compassion for outcasts (Luke, Acts)
+
+Old Testament Voices:
+
+David - Psalmist, man after God's heart, brokenness & worship (Psalms)
+Solomon - Wisdom, Proverbs, practical counsel
+Isaiah - Prophet, suffering servant, Messiah prophecies
+Jeremiah - Weeping prophet, lament & hope
+
+
+
+
 ## License
 Private - All Rights Reserved
 ```
