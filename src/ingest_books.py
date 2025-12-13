@@ -13,7 +13,7 @@ from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import Chroma
 
 # Configuration
-BOOKS_PATH = r"C:\Users\Bryan\OneDrive\Desktop\Psycology Books\Core Books"  # Your PDF folder
+BOOKS_PATH = r"C:\Users\GameRoom PC Shaw1\OneDrive\Desktop\Psycology Books\Core Books"
 DB_PATH = "./data/chroma_db"  # Where vector database will be stored
 EMBEDDING_MODEL = "llama3.1:8b"  # Model for creating embeddings
 
@@ -63,43 +63,65 @@ def chunk_documents(documents):
     return chunks
 
 def create_vectorstore(chunks):
-    """Create embeddings and store in ChromaDB"""
+    """Create embeddings and store in ChromaDB with real progress tracking"""
     print("\n🧠 Creating embeddings with Ollama...")
-    print(f"⏳ Processing {len(chunks)} chunks (this may take 20-45 minutes)...")
+    print(f"⏳ Processing {len(chunks)} chunks...")
+    print("This uses your CPU—expect 15-30 minutes on a fast desktop\n")
     
     # Initialize Ollama embeddings
     embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
     
-    # Create vector database
+    # Create vector database directory
     os.makedirs(DB_PATH, exist_ok=True)
     
-    # Process in batches with progress tracking
-    batch_size = 50
-    total_batches = (len(chunks) + batch_size - 1) // batch_size
+    # Initialize ChromaDB client
+    chroma_client = chromadb.PersistentClient(path=DB_PATH)
     
-    print(f"Processing in {total_batches} batches of {batch_size} chunks each...")
+    # Create or get collection
+    try:
+        collection = chroma_client.get_collection(name="healing_vault_books")
+        print("Found existing collection, will add to it")
+    except:
+        collection = chroma_client.create_collection(name="healing_vault_books")
+        print("Created new collection")
     
-    vectorstore = None
-    for i in range(0, len(chunks), batch_size):
-        batch = chunks[i:i + batch_size]
-        batch_num = (i // batch_size) + 1
+    # Process chunks one by one with progress
+    import time
+    start_time = time.time()
+    
+    for i, chunk in enumerate(chunks):
+        # Show progress every 10 chunks
+        if i % 10 == 0:
+            elapsed = time.time() - start_time
+            rate = i / elapsed if elapsed > 0 else 0
+            remaining = (len(chunks) - i) / rate if rate > 0 else 0
+            print(f"  Progress: {i}/{len(chunks)} chunks ({i*100//len(chunks)}%) - "
+                  f"~{remaining/60:.1f} min remaining")
         
-        print(f"  Batch {batch_num}/{total_batches} ({i}/{len(chunks)} chunks) - Processing...")
-        
-        if vectorstore is None:
-            # Create initial vectorstore
-            vectorstore = Chroma.from_documents(
-                documents=batch,
-                embedding=embeddings,
-                persist_directory=DB_PATH
+        # Generate embedding for this chunk
+        try:
+            embedding = embeddings.embed_query(chunk.page_content)
+            
+            # Add to ChromaDB
+            collection.add(
+                ids=[f"chunk_{i}"],
+                embeddings=[embedding],
+                documents=[chunk.page_content],
+                metadatas=[chunk.metadata]
             )
-        else:
-            # Add to existing vectorstore
-            vectorstore.add_documents(batch)
-        
-        print(f"  ✓ Batch {batch_num}/{total_batches} complete")
+        except Exception as e:
+            print(f"  Warning: Failed to process chunk {i}: {str(e)}")
+            continue
     
-    print(f"✓ Vector database created at {DB_PATH}")
+    print(f"\n✓ Processed all {len(chunks)} chunks in {(time.time()-start_time)/60:.1f} minutes")
+    
+    # Create LangChain wrapper
+    vectorstore = Chroma(
+        client=chroma_client,
+        collection_name="healing_vault_books",
+        embedding_function=embeddings
+    )
+    
     return vectorstore
 
 def test_retrieval(vectorstore):
