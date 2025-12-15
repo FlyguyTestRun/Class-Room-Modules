@@ -30,7 +30,7 @@ tests/        # Unit tests
 ## Author
 Bryan Shaw - Building as demonstration of RAG architecture and LLM integration skills, planned implementation to App. 
 
-## Vision: Biblical Personas as Sub-Agents
+## Vision: Biblical lens 
 One generic "Gentle Father" 
 
 New Testament Voices:
@@ -57,8 +57,18 @@ Isaiah - Prophet, suffering servant, Messiah prophecies
 
 Jeremiah - Weeping prophet, lament & hope
 
+## Workflow Structure
 
+User Entry → Overseer analyzes → 
+Checks intake data + character map → 
+Triggers appropriate specialists → 
+Each specialist uses: intake context + character info + their books → 
+Synthesized response
 
+Intake questionnaire system
+Silent Scribe memory database
+Auto-routing for specialist (trauma (guided by generational pattern identifier, shadow integration, somatic healer, addiction recovery, relationship patterns, leading to spriritual restoration)
+Character/entity extraction
 
 ## License
 Private - All Rights Reserved
