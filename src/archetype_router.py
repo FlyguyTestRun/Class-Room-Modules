@@ -8,14 +8,21 @@ MASCULINE_STATES = [
     "numb", "unmotivated", "adrift"
 ]
 
-def archetype_mode(text: str) -> str:
-    t = text.lower()
+from config import DEBUG
 
-    if any(word in t for word in FEMININE_STATES):
-        return "feminine"
+def archetype_mode(user_text: str):
+    text = user_text.lower()
 
-    if any(word in t for word in MASCULINE_STATES):
-        return "masculine"
+    if any(word in text for word in ["overwhelmed", "tired", "exhausted", "hurt"]):
+        mode = "feminine"
+    elif any(word in text for word in ["stuck", "confused", "lost", "direction"]):
+        mode = "balanced"
+    else:
+        mode = "masculine"
 
-    return "balanced"
+    debug_info = {
+        "archetype": mode,
+        "reason": "keyword-based heuristic"
+    }
 
+    return mode, debug_info

@@ -1,6 +1,6 @@
 """
-PDF Ingestion Pipeline for Healing Vault - BIBLE PDF VERSION (SELECTED BOOKS ONLY)
-Processes the Bible PDF into ChromaDB for RAG retrieval, including ONLY the specified books
+PDF Ingestion Pipeline for Healing Vault - NIV BIBLE PDF VERSION (ALL REQUESTED BOOKS)
+Processes the NIV Bible PDF into ChromaDB for RAG retrieval, including ALL the books you listed
 """
 
 import os
@@ -14,22 +14,22 @@ import time
 import re
 
 # ==================== CONFIGURATION ====================
-SINGLE_PDF_PATH = r"C:\Users\GameRoom PC Shaw1\OneDrive\Desktop\Psycology Books\The Holy Bible (KJV).pdf"
+# Path to your NIV Bible PDF
+SINGLE_PDF_PATH = r"C:\Users\GameRoom PC Shaw1\OneDrive\Desktop\Psycology Books\NIV-Bible.pdf"
 
-DB_PATH = "./data/chroma_db_bible_selected"  # Separate DB for your selected books
-EMBEDDING_MODEL = "nomic-embed-text"  # New — faster and better for embeddings
+DB_PATH = "./data/chroma_db_niv_bible_full_list"  # New DB for this expanded list
+EMBEDDING_MODEL = "nomic-embed-text"              # Fast, high-quality embeddings
 
-# ONLY THESE BOOKS WILL BE INCLUDED in the vector database
-# (All others will be automatically skipped)
+# ALL THE BOOKS YOU WANT TO INCLUDE (expanded list – everything you specified)
 INCLUDED_BOOKS = {
-    # Old Testament (your list)
+    # Old Testament
     "Genesis", "Exodus", "Leviticus", "Joshua", "Judges", "Ruth",
     "1 Samuel", "2 Samuel", "Ezra", "Nehemiah", "Esther",
     "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Solomon",
     "Isaiah", "Lamentations", "Ezekiel", "Daniel",
     "Hosea", "Jonah", "Micah", "Habakkuk", "Zechariah", "Malachi",
     
-    # New Testament (your list)
+    # New Testament
     "Matthew", "Mark", "Luke", "John", "Acts",
     "Romans", "1 Corinthians", "2 Corinthians", "Galatians",
     "Ephesians", "Philippians", "Colossians",
@@ -38,22 +38,23 @@ INCLUDED_BOOKS = {
     "1 John", "2 John", "3 John"
 }
 
-# Optional: normalize variations (e.g., "Song of Songs" → "Song of Solomon")
+# Normalize common variations in PDF formatting
 BOOK_NORMALIZATION = {
     "Song of Songs": "Song of Solomon",
     "Songs": "Song of Solomon",
     "1Samuel": "1 Samuel",
     "2Samuel": "2 Samuel",
-    # Add more if your PDF uses different formatting
+    "1Thessalonians": "1 Thessalonians",
+    # Add more if you see mismatches during the first run
 }
 
-# Book detection patterns (common in Bible PDFs)
+# Common book header patterns in NIV PDFs
 BOOK_PATTERNS = [
-    r'The Book of (\w+)',           # "The Book of Genesis"
-    r'Book of (\w+)',               # "Book of Exodus"
-    r'^(\w+)\s+Chapter\s+1',        # "Genesis Chapter 1" at start of line
-    r'^(\w+)\s+\d+:\d+',            # "Genesis 1:1"
-    r'^THE BOOK OF (\w+)',          # All caps variation
+    r'^THE BOOK OF (\w+)',           # "THE BOOK OF GENESIS"
+    r'^Book of (\w+)',               # "Book of Exodus"
+    r'^(\w+)\s+Chapter\s+\d+',       # "Genesis Chapter 1"
+    r'^(\w+)\s+\d+:\d+',             # "Genesis 1:1"
+    r'^(\w+)\s+1$',                  # "Genesis 1"
 ]
 
 # ======================================================
@@ -64,7 +65,7 @@ def load_single_pdf(pdf_path):
         print(f"❌ PDF not found: {pdf_path}")
         return []
     
-    print(f"📚 Loading Bible PDF: {pdf_path.name}")
+    print(f"📚 Loading NIV Bible PDF: {pdf_path.name}")
     try:
         loader = PyPDFLoader(str(pdf_path))
         pages = loader.load()
@@ -89,8 +90,8 @@ def chunk_documents(documents):
     print("\n📄 Chunking document with book detection...")
     
     text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1500,   # ~200-300 words – captures 10-15 verses, good for thematic retrieval
-        chunk_overlap=200, # Maintains context across verse/chapter boundaries
+        chunk_size=1500,   # ~200-300 words – excellent for verse-level retrieval
+        chunk_overlap=200, # Preserves context across chapter/verse boundaries
         length_function=len,
     )
     
@@ -112,18 +113,18 @@ def chunk_documents(documents):
     return all_chunks
 
 def create_vectorstore(chunks):
-    print("\n🧠 Generating embeddings – INCLUDING ONLY SELECTED BOOKS...")
-    print(f"⏳ Processing chunks (skipping any outside your 18 personalities list)...\n")
+    print("\n🧠 Generating embeddings – INCLUDING ALL YOUR REQUESTED BOOKS...")
+    print(f"⏳ Processing chunks (skipping anything outside the list)...\n")
     
     embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
     os.makedirs(DB_PATH, exist_ok=True)
     
     chroma_client = chromadb.PersistentClient(path=DB_PATH)
     try:
-        collection = chroma_client.get_collection(name="healing_vault_bible_selected")
+        collection = chroma_client.get_collection(name="healing_vault_niv_bible_full")
         print("Found existing collection – will add to it")
     except:
-        collection = chroma_client.create_collection(name="healing_vault_bible_selected")
+        collection = chroma_client.create_collection(name="healing_vault_niv_bible_full")
         print("Created new collection")
     
     start_time = time.time()
@@ -141,7 +142,7 @@ def create_vectorstore(chunks):
         
         if bible_book not in INCLUDED_BOOKS:
             skipped += 1
-            continue  # Skip books not in your personality-focused list
+            continue
         
         try:
             embedding = embeddings.embed_query(chunk.page_content)
@@ -156,22 +157,22 @@ def create_vectorstore(chunks):
             print(f"  Warning: Failed chunk {i}: {e}")
     
     print(f"\n✓ Ingestion complete in {(time.time()-start_time)/60:.1f} minutes")
-    print(f"Added {added} chunks | Skipped {skipped} chunks (outside selected books)")
+    print(f"Added {added} chunks | Skipped {skipped} chunks (outside your requested list)")
     
     vectorstore = Chroma(
         client=chroma_client,
-        collection_name="healing_vault_bible_selected",
+        collection_name="healing_vault_niv_bible_full",
         embedding_function=embeddings
     )
     return vectorstore
 
 def test_retrieval(vectorstore):
-    print("\n🔍 Testing retrieval on selected books...")
+    print("\n🔍 Testing retrieval on your full NIV list...")
     queries = [
-        "Paul's teaching on grace and forgiveness",
-        "David's expression of repentance and healing in the Psalms",
-        "John's description of love and relationship with God",
-        "James on practical faith and works"
+        "Paul's teaching on grace and the renewal of the mind",
+        "David's prayers of repentance and restoration in the Psalms",
+        "John's description of God's love casting out fear",
+        "James on faith demonstrated by works"
     ]
     for query in queries:
         print(f"\nQuery: {query}")
@@ -183,7 +184,7 @@ def test_retrieval(vectorstore):
 
 def main():
     print("=" * 70)
-    print("HEALING VAULT - Bible Ingestion (Selected Books for 18 Personalities)")
+    print("HEALING VAULT - NIV Bible Ingestion (All Requested Books)")
     print("=" * 70)
     
     documents = load_single_pdf(SINGLE_PDF_PATH)
@@ -194,7 +195,7 @@ def main():
     vectorstore = create_vectorstore(chunks)
     test_retrieval(vectorstore)
     
-    print(f"\n✅ Database ready! Only your selected books are embedded.")
+    print(f"\n✅ Database ready! All your requested NIV books are embedded.")
     print(f"📂 Saved at: {DB_PATH}")
 
 if __name__ == "__main__":
