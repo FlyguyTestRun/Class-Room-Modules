@@ -1,0 +1,21 @@
+# ---------------------------------------
+# Healing Vault – Auto venv activation
+# ---------------------------------------
+
+function Activate-HealingVaultVenv {
+    $projectPath = "C:\Users\GameRoom PC Shaw1\OneDrive\Desktop\healing-vault"
+    $venvActivate = Join-Path $projectPath "venv\Scripts\Activate.ps1"
+
+    if ((Get-Location).Path -like "$projectPath*") {
+        if (-not $env:VIRTUAL_ENV -and (Test-Path $venvActivate)) {
+            Write-Host "🔹 Activating Healing Vault venv..." -ForegroundColor Cyan
+            & $venvActivate
+        }
+    }
+}
+
+# Run on every prompt
+function prompt {
+    Activate-HealingVaultVenv
+    "PS $($executionContext.SessionState.Path.CurrentLocation)> "
+}

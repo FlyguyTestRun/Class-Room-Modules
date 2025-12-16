@@ -1,83 +1,136 @@
 """
-PDF Ingestion Pipeline for Healing Vault - BIBLE PDF VERSION (SELECTED BOOKS ONLY)
-Processes the Bible PDF into ChromaDB for RAG retrieval, including ONLY the specified books
+Healing Vault — Automated Bible Ingestion Pipeline
+=================================================
+
+Purpose:
+--------
+• Ingest multiple Bible PDFs (KJV, NIV, etc.)
+• Detect biblical book boundaries automatically
+• Route chunks into author-isolated ChromaDB collections
+• Preserve trauma-safe, non-preachy retrieval architecture
+
+Design Principles:
+------------------
+• No future code edits when adding authors or PDFs
+• One vector store per author (Paul ≠ Peter)
+• Clear, annotated structure for future expansion
 """
 
+# =====================================================
+# IMPORTS
+# =====================================================
+
 import os
+import time
+import re
 from pathlib import Path
 import chromadb
+
 from langchain_community.document_loaders import PyPDFLoader
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.embeddings import OllamaEmbeddings
 from langchain_community.vectorstores import Chroma
-import time
-import re
 
-# ==================== CONFIGURATION ====================
-SINGLE_PDF_PATH = r"C:\Users\GameRoom PC Shaw1\OneDrive\Desktop\Psycology Books\The Holy Bible (KJV).pdf"
+from biblical_persona import BIBLICAL_VOICES
 
-DB_PATH = "./data/chroma_db_bible_selected"  # Separate DB for your selected books
-EMBEDDING_MODEL = "nomic-embed-text"  # New — faster and better for embeddings
 
-# ONLY THESE BOOKS WILL BE INCLUDED in the vector database
-# (All others will be automatically skipped)
-INCLUDED_BOOKS = {
-    # Old Testament (your list)
-    "Genesis", "Exodus", "Leviticus", "Joshua", "Judges", "Ruth",
-    "1 Samuel", "2 Samuel", "Ezra", "Nehemiah", "Esther",
-    "Job", "Psalms", "Proverbs", "Ecclesiastes", "Song of Solomon",
-    "Isaiah", "Lamentations", "Ezekiel", "Daniel",
-    "Hosea", "Jonah", "Micah", "Habakkuk", "Zechariah", "Malachi",
-    
-    # New Testament (your list)
-    "Matthew", "Mark", "Luke", "John", "Acts",
-    "Romans", "1 Corinthians", "2 Corinthians", "Galatians",
-    "Ephesians", "Philippians", "Colossians",
-    "1 Thessalonians", "1 Timothy", "2 Timothy", "Titus", "Philemon",
-    "Hebrews", "James", "1 Peter", "2 Peter",
-    "1 John", "2 John", "3 John"
-}
+# =====================================================
+# CONFIGURATION
+# =====================================================
 
-# Optional: normalize variations (e.g., "Song of Songs" → "Song of Solomon")
+# Folder containing all Bible PDFs (KJV, NIV, future translations)
+BIBLE_PDF_DIR = r"C:\Users\GameRoom PC Shaw1\OneDrive\Desktop\Psycology Books\Spiritual & Relational"
+
+# Base directory where author-specific vector DBs will be stored
+RAG_BASE_PATH = "./rag/bible"
+
+# Embedding model (fast, local, stable)
+EMBEDDING_MODEL = "nomic-embed-text"
+
+
+# =====================================================
+# BUILD AUTHOR → BOOK MAP (AUTOMATED)
+# =====================================================
+"""
+Creates a lookup table such that:
+    "romans" → "paul"
+    "john"   → "john"
+
+This is the *single source of truth* for routing.
+Adding a new author only requires updating biblical_persona.py
+"""
+
+BOOK_TO_AUTHOR = {}
+
+for persona_key, persona in BIBLICAL_VOICES.items():
+    for book in persona.get("books_authored", []):
+        BOOK_TO_AUTHOR[book.lower()] = persona_key
+
+INCLUDED_BOOKS = set(book.title() for book in BOOK_TO_AUTHOR.keys())
+
+
+# =====================================================
+# BOOK NORMALIZATION & DETECTION
+# =====================================================
+"""
+Handles formatting differences across Bible translations.
+"""
+
 BOOK_NORMALIZATION = {
     "Song of Songs": "Song of Solomon",
     "Songs": "Song of Solomon",
     "1Samuel": "1 Samuel",
     "2Samuel": "2 Samuel",
-    # Add more if your PDF uses different formatting
 }
 
-# Book detection patterns (common in Bible PDFs)
 BOOK_PATTERNS = [
-    r'The Book of (\w+)',           # "The Book of Genesis"
-    r'Book of (\w+)',               # "Book of Exodus"
-    r'^(\w+)\s+Chapter\s+1',        # "Genesis Chapter 1" at start of line
-    r'^(\w+)\s+\d+:\d+',            # "Genesis 1:1"
-    r'^THE BOOK OF (\w+)',          # All caps variation
+    r'The Book of ([A-Za-z ]+)',
+    r'Book of ([A-Za-z ]+)',
+    r'^([1-3]?\s?[A-Za-z]+)\s+Chapter\s+1',
+    r'^([1-3]?\s?[A-Za-z]+)\s+\d+:\d+',
+    r'^THE BOOK OF ([A-Z ]+)',
 ]
 
-# ======================================================
 
-def load_single_pdf(pdf_path):
-    pdf_path = Path(pdf_path)
-    if not pdf_path.exists():
-        print(f"❌ PDF not found: {pdf_path}")
+# =====================================================
+# LOAD ALL BIBLE PDFs
+# =====================================================
+
+def load_all_bible_pdfs(pdf_dir: str):
+    """
+    Loads every PDF in the specified directory.
+    Each page retains source metadata.
+    """
+    pdf_dir = Path(pdf_dir)
+    if not pdf_dir.exists():
+        print(f"❌ PDF directory not found: {pdf_dir}")
         return []
-    
-    print(f"📚 Loading Bible PDF: {pdf_path.name}")
-    try:
+
+    documents = []
+
+    for pdf_path in pdf_dir.glob("*.pdf"):
+        print(f"\n📚 Loading {pdf_path.name}")
         loader = PyPDFLoader(str(pdf_path))
         pages = loader.load()
+
         for page in pages:
             page.metadata["source_file"] = pdf_path.name
-            page.metadata["book_title"] = pdf_path.stem
-        print(f"✓ Loaded {len(pages)} pages")
-        return pages
-    except Exception as e:
-        print(f"✗ Error loading PDF: {str(e)}")
-        return []
 
-def detect_bible_book(text):
+        print(f"✓ Loaded {len(pages)} pages")
+        documents.extend(pages)
+
+    return documents
+
+
+# =====================================================
+# INFER BOOK NAME FROM TEXT
+# =====================================================
+
+def detect_bible_book(text: str) -> str | None:
+    """
+    Uses regex patterns to infer the biblical book
+    from raw text content.
+    """
     for pattern in BOOK_PATTERNS:
         match = re.search(pattern, text, re.IGNORECASE | re.MULTILINE)
         if match:
@@ -85,117 +138,142 @@ def detect_bible_book(text):
             return BOOK_NORMALIZATION.get(book, book)
     return None
 
+
+# =====================================================
+# CHUNK DOCUMENTS WITH BOOK CONTEXT
+# =====================================================
+
 def chunk_documents(documents):
-    print("\n📄 Chunking document with book detection...")
-    
-    text_splitter = RecursiveCharacterTextSplitter(
-        chunk_size=1500,   # ~200-300 words – captures 10-15 verses, good for thematic retrieval
-        chunk_overlap=200, # Maintains context across verse/chapter boundaries
+    """
+    Splits documents into overlapping chunks
+    while preserving detected book context.
+    """
+    print("\n📄 Chunking documents with book detection...")
+
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=1500,      # ~10–15 verses
+        chunk_overlap=200,    # preserves narrative flow
         length_function=len,
     )
-    
+
     current_book = "Unknown"
-    all_chunks = []
-    
+    chunks = []
+
     for doc in documents:
-        page_text = doc.page_content
-        detected = detect_bible_book(page_text)
+        detected = detect_bible_book(doc.page_content)
         if detected:
             current_book = detected
-            print(f"Detected book: {current_book} (page {doc.metadata.get('page', '?')})")
-        
+            print(f"Detected book: {current_book}")
+
         doc.metadata["bible_book"] = current_book
-        chunks = text_splitter.split_documents([doc])
-        all_chunks.extend(chunks)
-    
-    print(f"✓ Created {len(all_chunks)} chunks")
-    return all_chunks
+        chunks.extend(splitter.split_documents([doc]))
 
-def create_vectorstore(chunks):
-    print("\n🧠 Generating embeddings – INCLUDING ONLY SELECTED BOOKS...")
-    print(f"⏳ Processing chunks (skipping any outside your 18 personalities list)...\n")
-    
+    print(f"✓ Created {len(chunks)} chunks")
+    return chunks
+
+
+# =====================================================
+# INGEST PIPELINE — AUTHOR ISOLATED
+# =====================================================
+
+def ingest_by_author(chunks):
+    """
+    Routes chunks into one ChromaDB collection per author.
+    Prevents cross-author semantic bleed.
+    """
+    print("\n🧠 Ingesting into author-specific vector stores...\n")
+
     embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
-    os.makedirs(DB_PATH, exist_ok=True)
-    
-    chroma_client = chromadb.PersistentClient(path=DB_PATH)
-    try:
-        collection = chroma_client.get_collection(name="healing_vault_bible_selected")
-        print("Found existing collection – will add to it")
-    except:
-        collection = chroma_client.create_collection(name="healing_vault_bible_selected")
-        print("Created new collection")
-    
-    start_time = time.time()
-    added = 0
-    skipped = 0
-    
-    for i, chunk in enumerate(chunks):
-        if i % 10 == 0:
-            elapsed = time.time() - start_time
-            rate = i / elapsed if elapsed > 0 else 0
-            remaining = (len(chunks) - i) / rate if rate > 0 else 0
-            print(f"  Progress: {i}/{len(chunks)} ({i*100//len(chunks)}%) – ~{remaining/60:.1f} min left")
-        
-        bible_book = chunk.metadata.get("bible_book", "Unknown")
-        
-        if bible_book not in INCLUDED_BOOKS:
-            skipped += 1
-            continue  # Skip books not in your personality-focused list
-        
-        try:
-            embedding = embeddings.embed_query(chunk.page_content)
-            collection.add(
-                ids=[f"chunk_{i}"],
-                embeddings=[embedding],
-                documents=[chunk.page_content],
-                metadatas=[chunk.metadata]
-            )
-            added += 1
-        except Exception as e:
-            print(f"  Warning: Failed chunk {i}: {e}")
-    
-    print(f"\n✓ Ingestion complete in {(time.time()-start_time)/60:.1f} minutes")
-    print(f"Added {added} chunks | Skipped {skipped} chunks (outside selected books)")
-    
-    vectorstore = Chroma(
-        client=chroma_client,
-        collection_name="healing_vault_bible_selected",
-        embedding_function=embeddings
-    )
-    return vectorstore
+    os.makedirs(RAG_BASE_PATH, exist_ok=True)
 
-def test_retrieval(vectorstore):
-    print("\n🔍 Testing retrieval on selected books...")
-    queries = [
-        "Paul's teaching on grace and forgiveness",
-        "David's expression of repentance and healing in the Psalms",
-        "John's description of love and relationship with God",
-        "James on practical faith and works"
-    ]
-    for query in queries:
-        print(f"\nQuery: {query}")
-        results = vectorstore.similarity_search(query, k=3)
-        for j, doc in enumerate(results, 1):
-            book = doc.metadata.get("bible_book", "Unknown")
-            print(f"  [{j}] {book}")
-            print(f"      {doc.page_content[:250]}...\n")
+    author_buffers = {}
+
+    for chunk in chunks:
+        book = chunk.metadata.get("bible_book", "").lower()
+        if book not in BOOK_TO_AUTHOR:
+            continue
+
+        author = BOOK_TO_AUTHOR[book]
+
+        chunk.metadata.update({
+            "book": book,
+            "author": author,
+            "source": "bible",
+        })
+
+        author_buffers.setdefault(author, []).append(chunk)
+
+    for author, author_chunks in author_buffers.items():
+        author_path = Path(RAG_BASE_PATH) / author
+        author_path.mkdir(parents=True, exist_ok=True)
+
+        print(f"📚 {author.upper()} — {len(author_chunks)} chunks")
+
+        Chroma.from_documents(
+            documents=author_chunks,
+            embedding=embeddings,
+            persist_directory=str(author_path),
+            collection_name=author
+        )
+
+    print("\n✅ Author-based ingestion complete.")
+
+
+# =====================================================
+# RETRIEVAL SANITY CHECK
+# =====================================================
+
+def test_retrieval():
+    """
+    Confirms isolation and relevance per author.
+    """
+    print("\n🔍 Testing author-isolated retrieval...\n")
+    embeddings = OllamaEmbeddings(model=EMBEDDING_MODEL)
+
+    tests = {
+        "paul": "grace and forgiveness",
+        "john": "love and abiding",
+        "david": "repentance and restoration",
+        "james": "faith and works"
+    }
+
+    for author, query in tests.items():
+        path = Path(RAG_BASE_PATH) / author
+        if not path.exists():
+            continue
+
+        vs = Chroma(
+            persist_directory=str(path),
+            embedding_function=embeddings,
+            collection_name=author
+        )
+
+        print(f"\n[{author.upper()}] Query: {query}")
+        results = vs.similarity_search(query, k=2)
+        for r in results:
+            print(f"  • {r.metadata.get('book')} — {r.page_content[:200]}...\n")
+
+
+# =====================================================
+# MAIN ENTRY POINT
+# =====================================================
 
 def main():
     print("=" * 70)
-    print("HEALING VAULT - Bible Ingestion (Selected Books for 18 Personalities)")
+    print("HEALING VAULT — Author-Based Bible RAG Ingestion")
     print("=" * 70)
-    
-    documents = load_single_pdf(SINGLE_PDF_PATH)
+
+    documents = load_all_bible_pdfs(BIBLE_PDF_DIR)
     if not documents:
         return
-    
+
     chunks = chunk_documents(documents)
-    vectorstore = create_vectorstore(chunks)
-    test_retrieval(vectorstore)
-    
-    print(f"\n✅ Database ready! Only your selected books are embedded.")
-    print(f"📂 Saved at: {DB_PATH}")
+    ingest_by_author(chunks)
+    test_retrieval()
+
+    print("\n📂 Vector stores saved to:", RAG_BASE_PATH)
+    print("✅ Ready for RAG controller integration.")
+
 
 if __name__ == "__main__":
     main()
