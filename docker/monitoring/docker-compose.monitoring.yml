@@ -1,0 +1,35 @@
+services:
+  grafana:
+    image: grafana/grafana:latest
+    container_name: eduops-grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./provisioning:/etc/grafana/provisioning
+    networks:
+      - classroommodules_default
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: eduops-prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+    networks:
+      - classroommodules_default
+
+volumes:
+  grafana_data:
+  prometheus_data:
+
+networks:
+  classroommodules_default:
+    external: true
