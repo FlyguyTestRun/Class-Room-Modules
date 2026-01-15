@@ -12,7 +12,7 @@ RUN useradd -m -u 1000 apiuser
 
 WORKDIR /app
 COPY --from=builder /root/.local /home/apiuser/.local
-COPY app.py .
+COPY app.py powershell_executor.py ./
 COPY config/ ./config/
 
 RUN chown -R apiuser:apiuser /app
