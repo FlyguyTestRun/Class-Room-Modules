@@ -129,7 +129,6 @@ See [BUILD_LOG.md](BUILD_LOG.md) for detailed build history and technical notes.
 
 ## 🔗 Links
 
-**GitHub:** https://github.com/FlyguyTestRun/Class-Room-Modules
 **LinkedIn:** https://www.linkedin.com/in/bryan-shaw-45a23124/
 
 ---
