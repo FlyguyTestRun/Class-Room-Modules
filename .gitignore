@@ -35,3 +35,26 @@ nul
 
 # Claude working files
 .claude/logs/
+.claude/settings.local.json
+
+# Personal/Career files
+INTERVIEW_PREP.md
+LINKEDIN_POST.md
+PORTFOLIO_PRESENTATION.md
+
+# Legacy/backup files
+*_old.py
+*_complex.py
+*.bak
+*_backup.*
+
+# Initialization scripts (one-time use)
+Initialize Docs/
+
+# Obsolete documentation (kept locally for reference)
+DEMO.md
+GRAFANA_SETUP.md
+SETUP_INSTRUCTIONS.md
+TODO.md
+NEXT_STEPS.md
+FILES_TO_REMOVE.md
