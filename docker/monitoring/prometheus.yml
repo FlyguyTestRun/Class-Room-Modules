@@ -13,3 +13,4 @@ scrape_configs:
   - job_name: 'api-gateway'
     static_configs:
       - targets: ['eduops-api:5000']
+    metrics_path: '/metrics'
