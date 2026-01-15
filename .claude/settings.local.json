@@ -35,7 +35,9 @@
       "Bash(docker ps:*)",
       "Bash(for:*)",
       "Bash(echo:*)",
-      "Bash(docker restart:*)"
+      "Bash(docker restart:*)",
+      "Bash(git checkout:*)",
+      "Bash(docker logs:*)"
     ]
   }
 }

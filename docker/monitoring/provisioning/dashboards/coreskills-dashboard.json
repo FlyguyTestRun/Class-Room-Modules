@@ -1,223 +1,188 @@
 {
-  "dashboard": {
-    "title": "CoreSkills4ai Command Center",
-    "tags": ["coreskills4ai", "monitoring"],
-    "timezone": "browser",
-    "panels": [
-      {
-        "id": 1,
-        "title": "API Request Rate (req/sec)",
-        "type": "graph",
-        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 0},
-        "targets": [{
-          "expr": "rate(flask_http_request_total[1m])",
-          "legendFormat": "{{method}} {{endpoint}}",
-          "refId": "A"
-        }],
-        "yaxes": [
-          {"format": "reqps", "label": "Requests/sec"},
-          {"format": "short"}
-        ],
-        "lines": true,
-        "linewidth": 2,
-        "fill": 1
-      },
-      {
-        "id": 2,
-        "title": "Container CPU Usage (%)",
-        "type": "graph",
-        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 0},
-        "targets": [
-          {
-            "expr": "rate(container_cpu_usage_seconds_total{name=~\"eduops.*\"}[5m]) * 100",
-            "legendFormat": "{{name}}",
-            "refId": "A"
-          }
-        ],
-        "yaxes": [
-          {"format": "percent", "label": "CPU %"},
-          {"format": "short"}
-        ],
-        "lines": true,
-        "linewidth": 2
-      },
-      {
-        "id": 3,
-        "title": "Container Memory Usage (MB)",
-        "type": "graph",
-        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
-        "targets": [{
-          "expr": "container_memory_usage_bytes{name=~\"eduops.*\"} / 1024 / 1024",
-          "legendFormat": "{{name}}",
-          "refId": "A"
-        }],
-        "yaxes": [
-          {"format": "decmbytes", "label": "Memory"},
-          {"format": "short"}
-        ],
-        "lines": true,
-        "fill": 2
-      },
-      {
-        "id": 4,
-        "title": "Redis Job Queue Length",
-        "type": "stat",
-        "gridPos": {"h": 8, "w": 6, "x": 12, "y": 8},
-        "targets": [{
-          "expr": "redis_db_keys{db=\"job_queue\"} or vector(0)",
-          "refId": "A"
-        }],
-        "options": {
-          "colorMode": "background",
-          "graphMode": "area",
-          "textMode": "value_and_name",
-          "reduceOptions": {
-            "values": false,
-            "calcs": ["lastNotNull"]
-          }
-        },
-        "fieldConfig": {
-          "defaults": {
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {"value": 0, "color": "green"},
-                {"value": 10, "color": "yellow"},
-                {"value": 50, "color": "red"}
-              ]
-            },
-            "unit": "none"
-          }
+  "annotations": {
+    "list": []
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "palette-classic"},
+          "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {"tooltip": false, "viz": false, "legend": false},
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {"type": "linear"},
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {"mode": "none", "group": "A"},
+            "thresholdsStyle": {"mode": "off"}
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"value": null, "color": "green"}
+            ]
+          },
+          "unit": "short"
         }
       },
-      {
-        "id": 5,
-        "title": "PostgreSQL Active Connections",
-        "type": "stat",
-        "gridPos": {"h": 8, "w": 6, "x": 18, "y": 8},
-        "targets": [{
-          "expr": "pg_stat_database_numbackends{datname=\"eduops\"} or vector(0)",
-          "refId": "A"
-        }],
-        "options": {
-          "colorMode": "background",
-          "graphMode": "area",
-          "textMode": "value_and_name",
-          "reduceOptions": {
-            "values": false,
-            "calcs": ["lastNotNull"]
-          }
-        },
-        "fieldConfig": {
-          "defaults": {
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {"value": 0, "color": "green"},
-                {"value": 50, "color": "yellow"},
-                {"value": 90, "color": "red"}
-              ]
-            },
-            "unit": "none",
-            "max": 100
-          }
-        }
+      "gridPos": {"h": 8, "w": 24, "x": 0, "y": 0},
+      "id": 1,
+      "options": {
+        "legend": {"calcs": [], "displayMode": "list", "placement": "bottom", "showLegend": true},
+        "tooltip": {"mode": "single", "sort": "none"}
       },
-      {
-        "id": 6,
-        "title": "System Health Status",
-        "type": "stat",
-        "gridPos": {"h": 6, "w": 24, "x": 0, "y": 16},
-        "targets": [{
+      "targets": [
+        {
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
           "expr": "up",
-          "legendFormat": "{{job}}",
           "refId": "A"
-        }],
-        "options": {
-          "colorMode": "value",
-          "graphMode": "none",
-          "textMode": "name",
-          "reduceOptions": {
-            "values": false,
-            "calcs": ["lastNotNull"]
-          }
-        },
-        "fieldConfig": {
-          "defaults": {
-            "mappings": [
-              {"type": "value", "value": "0", "text": "DOWN"},
-              {"type": "value", "value": "1", "text": "UP"}
-            ],
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {"value": 0, "color": "red"},
-                {"value": 1, "color": "green"}
-              ]
-            }
-          }
         }
-      },
-      {
-        "id": 7,
-        "title": "API Response Time (avg ms)",
-        "type": "graph",
-        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 22},
-        "targets": [{
-          "expr": "rate(flask_http_request_duration_seconds_sum[5m]) / rate(flask_http_request_duration_seconds_count[5m]) * 1000",
-          "legendFormat": "{{endpoint}}",
-          "refId": "A"
-        }],
-        "yaxes": [
-          {"format": "ms", "label": "Response Time"},
-          {"format": "short"}
-        ],
-        "lines": true,
-        "linewidth": 2
-      },
-      {
-        "id": 8,
-        "title": "Total Users in Database",
-        "type": "stat",
-        "gridPos": {"h": 8, "w": 12, "x": 12, "y": 22},
-        "targets": [{
-          "expr": "pg_stat_user_tables_n_tup_ins{relname=\"users\"} or vector(0)",
-          "refId": "A"
-        }],
-        "options": {
-          "colorMode": "value",
-          "graphMode": "area",
-          "textMode": "value_and_name",
-          "reduceOptions": {
-            "values": false,
-            "calcs": ["lastNotNull"]
-          }
-        },
-        "fieldConfig": {
-          "defaults": {
-            "color": {"mode": "thresholds"},
-            "thresholds": {
-              "mode": "absolute",
-              "steps": [
-                {"value": 0, "color": "blue"},
-                {"value": 100, "color": "green"},
-                {"value": 1000, "color": "yellow"}
-              ]
-            },
-            "unit": "none"
-          }
-        }
-      }
-    ],
-    "refresh": "5s",
-    "schemaVersion": 38,
-    "version": 1,
-    "time": {
-      "from": "now-15m",
-      "to": "now"
+      ],
+      "title": "System Health - All Services UP",
+      "type": "timeseries"
     },
-    "timepicker": {
-      "refresh_intervals": ["5s", "10s", "30s", "1m", "5m"]
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"value": null, "color": "green"},
+              {"value": 80, "color": "red"}
+            ]
+          },
+          "unit": "short"
+        }
+      },
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8},
+      "id": 2,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "values": false,
+          "calcs": ["lastNotNull"],
+          "fields": ""
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "expr": "up{job=\"postgres\"}",
+          "refId": "A"
+        }
+      ],
+      "title": "PostgreSQL Status",
+      "type": "gauge"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"value": null, "color": "green"},
+              {"value": 80, "color": "red"}
+            ]
+          }
+        }
+      },
+      "gridPos": {"h": 8, "w": 12, "x": 12, "y": 8},
+      "id": 3,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "values": false,
+          "calcs": ["lastNotNull"],
+          "fields": ""
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "expr": "up{job=\"redis\"}",
+          "refId": "A"
+        }
+      ],
+      "title": "Redis Status",
+      "type": "gauge"
+    },
+    {
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "fieldConfig": {
+        "defaults": {
+          "color": {"mode": "thresholds"},
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {"value": null, "color": "green"},
+              {"value": 80, "color": "red"}
+            ]
+          }
+        }
+      },
+      "gridPos": {"h": 8, "w": 12, "x": 0, "y": 16},
+      "id": 4,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "values": false,
+          "calcs": ["lastNotNull"],
+          "fields": ""
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.0.0",
+      "targets": [
+        {
+          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "expr": "up{job=\"api-gateway\"}",
+          "refId": "A"
+        }
+      ],
+      "title": "API Gateway Status",
+      "type": "gauge"
     }
-  }
+  ],
+  "refresh": "5s",
+  "schemaVersion": 38,
+  "tags": ["coreskills4ai"],
+  "templating": {"list": []},
+  "time": {"from": "now-15m", "to": "now"},
+  "timepicker": {},
+  "timezone": "",
+  "title": "CoreSkills4ai Command Center",
+  "uid": "coreskills4ai",
+  "version": 1,
+  "weekStart": ""
 }
