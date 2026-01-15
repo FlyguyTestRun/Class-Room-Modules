@@ -144,21 +144,21 @@ The CoreSkills4ai Command Center is a **containerized training platform** design
 
 ```
 ┌─────────────────────────────────────────────────────────────┐
-│                  CoreSkills4ai Platform                      │
+│                CoreSkills4ai VM Modules Platform            │
 ├─────────────────────────────────────────────────────────────┤
-│                                                              │
-│  [Grafana] ◄─── [Prometheus] ◄─── [Flask API]              │
-│     :3000          :9090            :5000                    │
-│       │                               │                      │
+│                                                             │
+│  [Grafana] ◄─── [Prometheus] ◄─── [Flask API]               │
+│     :3000          :9090            :5000                   │
+│       │                               │                     │
 │       └─────────┬────────────────────┘                      │
-│                 │                                            │
+│                 │                                           │
 │       [PostgreSQL :5432] ◄─── [Redis :6379]                 │
-│              │                      │                        │
-│              │                      ▼                        │
-│              │            [PowerShell Worker]                │
-│              │                      │                        │
-│              └──────────────────────┘                        │
-│                                                              │
+│              │                      │                       │
+│              │                      ▼                       │
+│              │            [PowerShell Worker]               │
+│              │                      │                       │
+│              └──────────────────────┘                       │
+│                                                             │
 └─────────────────────────────────────────────────────────────┘
 
 Data Flow:
@@ -329,7 +329,7 @@ Data Flow:
 - **Troubleshooting:** See README.md "Troubleshooting" section
 
 ### For Students
-- **Prerequisites:** Docker Desktop, Python 3.8+
+- **Prerequisites:** Docker Desktop, Python
 - **Setup Time:** ~2 minutes from clone to operational
 - **Documentation:** README.md has step-by-step instructions
 - **Support:** Comprehensive troubleshooting guide included
