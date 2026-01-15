@@ -1,4 +1,4 @@
-# EduOps Build Log
+# CoreSkills4ai Build Log
 
 ## Phase 0: Foundation ✅
 - Docker Desktop working (CLI only, GUI not needed)

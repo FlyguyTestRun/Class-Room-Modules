@@ -1,4 +1,4 @@
-# EduOps Demo Script
+# CoreSkills4ai Demo Script
 
 ## Prerequisites
 ```powershell

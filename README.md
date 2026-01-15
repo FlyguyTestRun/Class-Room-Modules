@@ -1,4 +1,4 @@
-# EduOps Command Center
+# CoreSkills4ai Command Center
 
 **Enterprise Device & Identity Lifecycle Management Platform**
 

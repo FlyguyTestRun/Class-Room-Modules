@@ -28,7 +28,14 @@
       "Bash(git push:*)",
       "Bash(docker-compose restart:*)",
       "Bash(docker-compose logs:*)",
-      "Bash(docker-compose:*)"
+      "Bash(docker-compose:*)",
+      "Bash(for i in {1..10})",
+      "Bash(do curl -s http://localhost:5000/health)",
+      "Bash(done)",
+      "Bash(docker ps:*)",
+      "Bash(for:*)",
+      "Bash(echo:*)",
+      "Bash(docker restart:*)"
     ]
   }
 }
