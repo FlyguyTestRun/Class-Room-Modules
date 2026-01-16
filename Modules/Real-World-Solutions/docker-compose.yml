@@ -1,0 +1,380 @@
+# =============================================================================
+# Real-World-Solutions: ZZZ Accounting Merger Platform
+# =============================================================================
+# Full stack with 12 containers for enterprise integration training
+#
+# Usage:
+#   docker-compose up -d              # Start all services
+#   docker-compose logs -f rag-api    # Follow specific logs
+#   docker-compose down               # Stop all services
+#   docker-compose down -v            # Stop and remove volumes
+#
+# Ports:
+#   5433-5435: Legacy databases (ZZZ, AAA, BBB)
+#   5436: Unified database
+#   5001: RAG API
+#   5002-5003: MCP servers
+#   8000: ChromaDB
+#   11434: Ollama
+#   3001: React frontend
+#   9091: Prometheus (separate from main stack)
+# =============================================================================
+
+services:
+  # ===========================================================================
+  # TIER 1: Legacy Databases (Intentionally Messy Data)
+  # ===========================================================================
+
+  # ZZZ Accounting - The "good" database (clean schema)
+  zzz-legacy-db:
+    build:
+      context: ./docker/legacy-dbs/zzz-db
+      dockerfile: Dockerfile
+    container_name: zzz-legacy-db
+    environment:
+      POSTGRES_DB: ${ZZZ_DB_NAME:-zzz_accounting}
+      POSTGRES_USER: ${ZZZ_DB_USER:-zzz_admin}
+      POSTGRES_PASSWORD: ${ZZZ_DB_PASSWORD:-zzz_secure_2024}
+    ports:
+      - "5433:5432"
+    volumes:
+      - zzz_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${ZZZ_DB_USER:-zzz_admin} -d ${ZZZ_DB_NAME:-zzz_accounting}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - merger-network
+    restart: unless-stopped
+
+  # AAA Accounting - The "messy" database (poor naming, inconsistent data)
+  aaa-legacy-db:
+    build:
+      context: ./docker/legacy-dbs/aaa-db
+      dockerfile: Dockerfile
+    container_name: aaa-legacy-db
+    environment:
+      POSTGRES_DB: ${AAA_DB_NAME:-aaa_legacy}
+      POSTGRES_USER: ${AAA_DB_USER:-aaa_user}
+      POSTGRES_PASSWORD: ${AAA_DB_PASSWORD:-aaa_legacy_pass}
+    ports:
+      - "5434:5432"
+    volumes:
+      - aaa_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${AAA_DB_USER:-aaa_user} -d ${AAA_DB_NAME:-aaa_legacy}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - merger-network
+    restart: unless-stopped
+
+  # BBB Construction - The "different" database (completely different schema)
+  bbb-legacy-db:
+    build:
+      context: ./docker/legacy-dbs/bbb-db
+      dockerfile: Dockerfile
+    container_name: bbb-legacy-db
+    environment:
+      POSTGRES_DB: ${BBB_DB_NAME:-bbb_construction}
+      POSTGRES_USER: ${BBB_DB_USER:-bbb_admin}
+      POSTGRES_PASSWORD: ${BBB_DB_PASSWORD:-bbb_build_2024}
+    ports:
+      - "5435:5432"
+    volumes:
+      - bbb_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${BBB_DB_USER:-bbb_admin} -d ${BBB_DB_NAME:-bbb_construction}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - merger-network
+    restart: unless-stopped
+
+  # ===========================================================================
+  # TIER 2: Unified Database (Clean Merged Data)
+  # ===========================================================================
+
+  unified-db:
+    build:
+      context: ./docker/unified-db
+      dockerfile: Dockerfile
+    container_name: unified-db
+    environment:
+      POSTGRES_DB: ${UNIFIED_DB_NAME:-zzz_unified}
+      POSTGRES_USER: ${UNIFIED_DB_USER:-unified_admin}
+      POSTGRES_PASSWORD: ${UNIFIED_DB_PASSWORD:-unified_secure_2024}
+    ports:
+      - "5436:5432"
+    volumes:
+      - unified_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${UNIFIED_DB_USER:-unified_admin} -d ${UNIFIED_DB_NAME:-zzz_unified}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - merger-network
+    restart: unless-stopped
+    depends_on:
+      zzz-legacy-db:
+        condition: service_healthy
+      aaa-legacy-db:
+        condition: service_healthy
+      bbb-legacy-db:
+        condition: service_healthy
+
+  # ===========================================================================
+  # TIER 3: Cache & Queue
+  # ===========================================================================
+
+  redis:
+    image: redis:7-alpine
+    container_name: merger-redis
+    ports:
+      - "6380:6379"  # Different port to avoid conflict with main stack
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - merger-network
+    restart: unless-stopped
+
+  # ===========================================================================
+  # TIER 4: Vector Database (ChromaDB for RAG)
+  # ===========================================================================
+
+  chromadb:
+    image: ghcr.io/chroma-core/chroma:latest
+    container_name: chromadb
+    ports:
+      - "8000:8000"
+    volumes:
+      - chroma_data:/chroma/chroma
+    environment:
+      - ANONYMIZED_TELEMETRY=false
+      - ALLOW_RESET=true
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - merger-network
+    restart: unless-stopped
+
+  # ===========================================================================
+  # TIER 5: Local LLM (Ollama with Mistral)
+  # ===========================================================================
+
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      - OLLAMA_HOST=0.0.0.0
+    # GPU support (uncomment for NVIDIA GPU)
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: 1
+    #           capabilities: [gpu]
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:11434/api/tags"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - merger-network
+    restart: unless-stopped
+
+  # ===========================================================================
+  # TIER 6: RAG API Service
+  # ===========================================================================
+
+  rag-api:
+    build:
+      context: ./docker/rag-api
+      dockerfile: Dockerfile
+    container_name: rag-api
+    ports:
+      - "5001:5001"
+    environment:
+      - FLASK_ENV=development
+      - FLASK_DEBUG=0
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - OLLAMA_HOST=ollama
+      - OLLAMA_PORT=11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-mistral}
+      - REDIS_HOST=merger-redis
+      - REDIS_PORT=6379
+      - UNIFIED_DB_HOST=unified-db
+      - UNIFIED_DB_PORT=5432
+      - UNIFIED_DB_NAME=${UNIFIED_DB_NAME:-zzz_unified}
+      - UNIFIED_DB_USER=${UNIFIED_DB_USER:-unified_admin}
+      - UNIFIED_DB_PASSWORD=${UNIFIED_DB_PASSWORD:-unified_secure_2024}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - PYTHONUNBUFFERED=1
+    volumes:
+      - ./documents:/app/documents:ro
+      - ./data:/app/data:ro
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+    networks:
+      - merger-network
+    restart: unless-stopped
+    depends_on:
+      chromadb:
+        condition: service_healthy
+      ollama:
+        condition: service_healthy
+      unified-db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+  # ===========================================================================
+  # TIER 7: MCP Servers
+  # ===========================================================================
+
+  # Knowledge MCP Server (document search, policies)
+  mcp-knowledge:
+    build:
+      context: ./docker/mcp-servers/knowledge-server
+      dockerfile: Dockerfile
+    container_name: mcp-knowledge
+    ports:
+      - "5002:5002"
+    environment:
+      - MCP_PORT=5002
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+      - RAG_API_HOST=rag-api
+      - RAG_API_PORT=5001
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5002/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+    networks:
+      - merger-network
+    restart: unless-stopped
+    depends_on:
+      rag-api:
+        condition: service_healthy
+
+  # Financial MCP Server (secure, RBAC-protected)
+  mcp-financial:
+    build:
+      context: ./docker/mcp-servers/financial-server
+      dockerfile: Dockerfile
+    container_name: mcp-financial
+    ports:
+      - "5003:5003"
+    environment:
+      - MCP_PORT=5003
+      - UNIFIED_DB_HOST=unified-db
+      - UNIFIED_DB_PORT=5432
+      - UNIFIED_DB_NAME=${UNIFIED_DB_NAME:-zzz_unified}
+      - UNIFIED_DB_USER=${UNIFIED_DB_USER:-unified_admin}
+      - UNIFIED_DB_PASSWORD=${UNIFIED_DB_PASSWORD:-unified_secure_2024}
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5003/health"]
+      interval: 15s
+      timeout: 10s
+      retries: 3
+    networks:
+      - merger-network
+    restart: unless-stopped
+    depends_on:
+      unified-db:
+        condition: service_healthy
+
+  # ===========================================================================
+  # TIER 8: React Frontend
+  # ===========================================================================
+
+  frontend:
+    build:
+      context: ./docker/frontend
+      dockerfile: Dockerfile
+    container_name: merger-frontend
+    ports:
+      - "3001:3001"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5001
+      - REACT_APP_MCP_KNOWLEDGE_URL=http://localhost:5002
+      - REACT_APP_MCP_FINANCIAL_URL=http://localhost:5003
+    networks:
+      - merger-network
+    restart: unless-stopped
+    depends_on:
+      rag-api:
+        condition: service_healthy
+
+  # ===========================================================================
+  # TIER 9: Monitoring (Prometheus - separate instance)
+  # ===========================================================================
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: merger-prometheus
+    ports:
+      - "9091:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.enable-lifecycle'
+    networks:
+      - merger-network
+    restart: unless-stopped
+
+# =============================================================================
+# Networks
+# =============================================================================
+networks:
+  merger-network:
+    driver: bridge
+    name: merger-network
+
+# =============================================================================
+# Volumes
+# =============================================================================
+volumes:
+  zzz_data:
+    name: zzz_legacy_data
+  aaa_data:
+    name: aaa_legacy_data
+  bbb_data:
+    name: bbb_legacy_data
+  unified_data:
+    name: unified_db_data
+  redis_data:
+    name: merger_redis_data
+  chroma_data:
+    name: chromadb_data
+  ollama_data:
+    name: ollama_models
+  prometheus_data:
+    name: merger_prometheus_data

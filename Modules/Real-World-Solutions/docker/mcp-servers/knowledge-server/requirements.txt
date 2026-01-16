@@ -1,0 +1,7 @@
+# MCP Knowledge Server Dependencies
+flask==3.0.0
+flask-cors==4.0.0
+httpx==0.26.0
+pydantic==2.5.3
+python-dotenv==1.0.0
+structlog==24.1.0

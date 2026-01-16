@@ -1,0 +1,28 @@
+# Prometheus configuration for Real-World-Solutions module
+global:
+  scrape_interval: 15s
+  evaluation_interval: 15s
+
+scrape_configs:
+  # RAG API
+  - job_name: 'rag-api'
+    static_configs:
+      - targets: ['rag-api:5001']
+    metrics_path: /metrics
+
+  # MCP Knowledge Server
+  - job_name: 'mcp-knowledge'
+    static_configs:
+      - targets: ['mcp-knowledge:5002']
+    metrics_path: /metrics
+
+  # MCP Financial Server
+  - job_name: 'mcp-financial'
+    static_configs:
+      - targets: ['mcp-financial:5003']
+    metrics_path: /metrics
+
+  # Prometheus self-monitoring
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
