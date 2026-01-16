@@ -1,7 +1,7 @@
 # 🎓 CoreSkills4ai Command Center
 
 > **Enterprise Device & Identity Lifecycle Management Platform**
-> Production-grade training environment for Microsoft infrastructure automation, AI-assisted IT operations, and modern DevOps practices.
+> VM training environment for Microsoft infrastructure automation, Agentic AI-assisted operations, and modern DevOps practices.
 
 [![Docker](https://img.shields.io/badge/Docker-20.10+-blue.svg)](https://www.docker.com/)
 [![Python](https://img.shields.io/badge/Python-3.12-green.svg)](https://www.python.org/)
