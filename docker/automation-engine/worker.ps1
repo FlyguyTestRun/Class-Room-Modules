@@ -25,10 +25,10 @@ while ($true) {
                     -GradeLevel $jobData.data.grade_level `
                     -GraduationYear $jobData.data.graduation_year
 
-                # Update job status
+                # Update job status - use Add-Member for new properties
                 $jobData.status = 'completed'
-                $jobData.result = $result
-                $jobData.completed_at = Get-Date -Format 'o'
+                $jobData | Add-Member -NotePropertyName 'result' -NotePropertyValue $result -Force
+                $jobData | Add-Member -NotePropertyName 'completed_at' -NotePropertyValue (Get-Date -Format 'o') -Force
 
                 & redis-cli -h redis SET $jobKey ($jobData | ConvertTo-Json -Compress)
                 Write-Host "✓ Job completed" -ForegroundColor Green

@@ -167,3 +167,82 @@ See NEXT_STEPS.md for detailed plan.
 - Security: Basic credential management via environment variables
 
 **Ready for:** Cloudshare VM imaging and classroom deployment
+
+---
+
+## Phase 7: Session 3 - Classroom Deployment Prep
+**Started:** January 15, 2026
+
+### Focus:
+Prepare system for student deployment on Cloudshare VMs
+
+### Tasks:
+1. **Verify Grafana Monitoring** (Current)
+   - Access: http://localhost:3000
+   - Login: admin / (password from .env)
+   - Verify 8 dashboard panels show data
+   - Confirm Prometheus scraping at http://localhost:9090
+
+2. **Documentation Updates** (Pending)
+   - README screenshots of Grafana
+   - DEPLOYMENT.md for VM setup
+   - TROUBLESHOOTING.md for common issues
+
+3. **End-to-End Testing** (Pending)
+   - Full workflow validation
+   - Performance baseline
+
+### Service URLs:
+| Service | URL |
+|---------|-----|
+| Flask API | http://localhost:5000 |
+| Grafana | http://localhost:3000 |
+| Prometheus | http://localhost:9090 |
+
+### Completed:
+- ✅ **Grafana Monitoring Verified** (January 15, 2026)
+  - Fixed datasource UID mismatch in dashboard JSON
+  - Removed hardcoded `uid: "prometheus"` references
+  - Recreated monitoring stack with fresh volumes
+  - Dashboard now shows API metrics correctly
+  - Prometheus scraping Flask API at 15-second intervals
+
+### Working Panels:
+- System Health (timeseries) - Shows `up` metric for all services
+- API Gateway Status (gauge) - Shows 1 when API is healthy
+- API Request Rate (timeseries) - Shows requests/second
+- API Response Time (timeseries) - Shows latency
+- HTTP Status Code Distribution (pie chart) - Shows 200s, 4xx, 5xx
+
+### Expected "No Data" Panels:
+- PostgreSQL Status - No native Prometheus exporter
+- Redis Status - No native Prometheus exporter
+- API Error Rate - Only shows data when 5xx errors occur
+
+---
+
+### End-to-End Workflow Test ✅ (January 15, 2026)
+
+**Test:** API → Redis → PowerShell → Response
+
+**Steps tested:**
+1. POST student creation request to API
+2. API queues job in Redis
+3. PowerShell worker polls Redis, processes job
+4. Worker runs `New-KISDStudentAccount` function
+5. Job status updated to "completed" in Redis
+6. API returns full result with created account details
+
+**Bug Fix:** `worker.ps1` - Changed direct property assignment to `Add-Member` for dynamic properties on PSCustomObject
+
+**Sample successful response:**
+```json
+{
+  "status": "completed",
+  "result": {
+    "Username": "jdoe6002",
+    "Email": "jdoe6002@students.keller.edu",
+    "Status": "Active"
+  }
+}
+```

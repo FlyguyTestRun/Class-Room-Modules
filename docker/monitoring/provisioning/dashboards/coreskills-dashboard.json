@@ -9,7 +9,7 @@
   "links": [],
   "panels": [
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {"type": "prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {"mode": "palette-classic"},
@@ -50,7 +50,7 @@
       },
       "targets": [
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {"type": "prometheus"},
           "expr": "up",
           "refId": "A"
         }
@@ -59,7 +59,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {"type": "prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {"mode": "thresholds"},
@@ -89,7 +89,7 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {"type": "prometheus"},
           "expr": "up{job=\"postgres\"}",
           "refId": "A"
         }
@@ -98,7 +98,7 @@
       "type": "gauge"
     },
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {"type": "prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {"mode": "thresholds"},
@@ -127,7 +127,7 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {"type": "prometheus"},
           "expr": "up{job=\"redis\"}",
           "refId": "A"
         }
@@ -136,7 +136,7 @@
       "type": "gauge"
     },
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {"type": "prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {"mode": "thresholds"},
@@ -165,7 +165,7 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {"type": "prometheus"},
           "expr": "up{job=\"api-gateway\"}",
           "refId": "A"
         }
@@ -174,7 +174,7 @@
       "type": "gauge"
     },
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {"type": "prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {"mode": "palette-classic"},
@@ -215,7 +215,7 @@
       },
       "targets": [
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {"type": "prometheus"},
           "expr": "rate(flask_http_request_total[1m])",
           "refId": "A"
         }
@@ -224,7 +224,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {"type": "prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {"mode": "palette-classic"},
@@ -267,7 +267,7 @@
       },
       "targets": [
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {"type": "prometheus"},
           "expr": "flask_http_request_duration_seconds_sum / flask_http_request_duration_seconds_count",
           "refId": "A"
         }
@@ -276,7 +276,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {"type": "prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {"mode": "thresholds"},
@@ -307,7 +307,7 @@
       "pluginVersion": "10.0.0",
       "targets": [
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {"type": "prometheus"},
           "expr": "rate(flask_http_request_total{status=~\"5..\"}[5m]) / rate(flask_http_request_total[5m]) * 100",
           "refId": "A"
         }
@@ -316,7 +316,7 @@
       "type": "gauge"
     },
     {
-      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "datasource": {"type": "prometheus"},
       "fieldConfig": {
         "defaults": {
           "color": {"mode": "palette-classic"},
@@ -335,7 +335,7 @@
       },
       "targets": [
         {
-          "datasource": {"type": "prometheus", "uid": "prometheus"},
+          "datasource": {"type": "prometheus"},
           "expr": "sum by (status) (flask_http_request_total)",
           "refId": "A"
         }

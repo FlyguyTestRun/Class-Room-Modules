@@ -1,7 +1,7 @@
 # Command Center
 ## Enterprise Device & Identity Lifecycle Management Platform
  
-*Demonstrating Microsoft Infrastructure Automation & AI-Assisted IT Operations*
+*Demonstrating Infrastructure Automation & AI-Assisted IT Operations*
 
 ---
 

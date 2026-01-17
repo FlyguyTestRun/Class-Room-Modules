@@ -1,9 +1,9 @@
-# ZZZ Financial Services - Data Integration Platform
+# ZZZ Accounting Merger Platform - Development TODO
 
 > **Project:** Real-World Data Integration & AI Training Module
-> **Scenario:** ZZZ Financial Services acquires AAA Accounting
+> **Scenario:** ZZZ Financial acquires AAA Accounting
 > **Duration:** 4 weeks part-time
-> **Difficulty:** Beginner to Intermediate
+> **Difficulty:** Intermediate
 
 ---
 
@@ -12,20 +12,22 @@
 You're building a **complete enterprise data integration platform** that solves a real-world problem:
 
 **The Business Problem:**
-**ZZZ Financial Services** is acquiring **AAA Accounting**, a small regional accounting firm with 15 years of client data stored in legacy systems.
 
-The challenge? AAA Accounting has:
-- Legacy database with poor naming conventions
-- Inconsistent data formats (phone numbers, addresses, dates)
-- Duplicate client records
-- Messy, unstructured data
-- Documents scattered across file shares
-- No data governance or quality standards
 
-**Note:** BBB Construction data is included as an optional advanced exercise for students wanting to practice with JSON/UUID schemas.
+1. **AAA Accounting** - ZZZ Finacial just acquired a small accounting firm with 15 years of disorganized client data, seperate accounting programs and a completly different SaaS tech-stack. ZZZ wants to organize thier data and shift them away from thier expensive CRM tool and over to thier PaaS system. Merging thier data into a similar structure and eliminate the disoganization and restructure it similar to ZZZ (more profesioinal) data managment style. During this acqusition ZZZ would like to integrate some new AI features into thier PaaS system. They would like to have AI help with thier book keeping work and know some good tools to use to help with this integration. ZZZ does have a data managment team but looking for us to come in and help them consult with this project. 
+
+
+
+The challenge? Each company has:
+- Different database systems (ZZZ Azure Database SQL, Systems Engineer, but NO Dev Team that is why they need us),  <Need Accounting Programs to consider>, 
+- Different data formats
+- Duplicate clients
+- YYY with Messy, inconsistent data
+- Documents scattered everywhere, need organization and restrucure. 
+- During this transition phase AAA 
 
 **Your Solution:**
-- Merge AAA's messy data into ZZZ's clean database
+- Merge all data into one clean database
 - Build an AI assistant that can answer questions about clients
 - Create a modern web interface for the team
 - Automate routine tasks
@@ -72,9 +74,6 @@ Before starting, ensure you have:
   - Why: Docker images, LLM models, and databases need space
 
 ---
-
-## Phase 1: Environment Setup
-**Time:** 2-3 hours | **Difficulty:** Beginner
 
 ### What You'll Learn
 - How Docker Compose orchestrates multiple services
