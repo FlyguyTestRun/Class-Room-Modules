@@ -1,0 +1,352 @@
+{
+  "program": {
+    "name": "CoreSkills4ai",
+    "tagline": "From AI Foundations to Enterprise Consulting",
+    "version": "1.0",
+    "launch_date": "2026-Q1",
+    "description": "Tiered AI education: Beginner to Advanced in 4 complementary tracks"
+  },
+  "tracks": [
+    {
+      "id": "track_1",
+      "name": "AI Foundations for Everyone",
+      "target_audience": ["Non-technical", "Business owners", "Career switchers"],
+      "prerequisite": "None",
+      "duration_weeks": 5,
+      "intensity": {
+        "self_paced_hours": 20,
+        "full_day_intensive_hours": 20,
+        "full_day_intensive_days": 1
+      },
+      "modules": 5,
+      "progression": "Beginner → Intermediate → Advanced",
+      "capstone_type": "Simple AI workflow → Production AI governance",
+      "cert_alignment": ["NIST AI RMF (Optional M4-5)"],
+      "outcomes": [
+        "Understand AI business impact",
+        "Recognize AI risks and governance needs",
+        "Write effective prompts",
+        "Design simple AI workflow"
+      ],
+      "portfolio_integration": {
+        "module_1": "Why AI Mattered: Your Client ROI Case Study",
+        "module_4": "Risk assessment framework from real engagement",
+        "module_5": "Governance system you designed"
+      }
+    },
+    {
+      "id": "track_2",
+      "name": "Engineering Core",
+      "target_audience": ["Junior developers", "Career switchers"],
+      "prerequisite": "Track 1 OR coding basics",
+      "duration_weeks": 8,
+      "intensity": {
+        "self_paced_hours": 40,
+        "full_day_intensive_hours": 40,
+        "full_day_intensive_days": 2
+      },
+      "modules": 7,
+      "progression": "Beginner → Advanced",
+      "capstone_type": "RAG App → Enterprise RAG System",
+      "cert_alignment": [
+        "AWS Certified Cloud Practitioner (after M1-2)",
+        "AWS Certified Developer (after M6)",
+        "AWS Certified Solutions Architect (after M7)"
+      ],
+      "outcomes": [
+        "Build functional AI systems (APIs to deployment)",
+        "Create production-ready RAG systems",
+        "Test and monitor AI systems",
+        "Deploy AI to cloud infrastructure"
+      ],
+      "portfolio_integration": {
+        "module_4": "Your RAG system case study",
+        "module_6": "Your deployment architecture",
+        "module_7": "Production RAG system with cost optimization"
+      }
+    },
+    {
+      "id": "track_3",
+      "name": "Enterprise Integration",
+      "target_audience": ["Mid-level engineers", "Tech leads", "Architects"],
+      "prerequisite": "Track 2",
+      "duration_weeks": 12,
+      "intensity": {
+        "self_paced_hours": 50,
+        "full_day_intensive_hours": 50,
+        "full_day_intensive_days": 2.5
+      },
+      "modules": 9,
+      "progression": "Intermediate → Advanced",
+      "capstone_type": "System design → Real client project",
+      "cert_alignment": [
+        "AWS Data Analytics",
+        "AWS Machine Learning",
+        "AWS Security",
+        "DevOps certifications"
+      ],
+      "outcomes": [
+        "Design scalable AI systems",
+        "Implement governance and compliance",
+        "Optimize cost and performance",
+        "Deploy to production with confidence"
+      ],
+      "portfolio_integration": {
+        "module_2": "Your client data architecture",
+        "module_9": "Enterprise system case study"
+      }
+    },
+    {
+      "id": "track_4",
+      "name": "Consulting Mastery",
+      "target_audience": ["Engineers→Consultants", "Tech leads"],
+      "prerequisite": "Track 3",
+      "duration_weeks": 8,
+      "intensity": {
+        "self_paced_hours": 30,
+        "full_day_intensive_hours": 30,
+        "full_day_intensive_days": 1.5
+      },
+      "modules": 7,
+      "progression": "Advanced only",
+      "capstone_type": "Real client engagement",
+      "cert_alignment": [
+        "Consulting methodologies (PMI, Agile Alliance)"
+      ],
+      "outcomes": [
+        "Assess client AI readiness",
+        "Build business cases and ROI models",
+        "Manage stakeholders and delivery",
+        "Deliver transformation engagements"
+      ],
+      "portfolio_integration": {
+        "module_1": "Your assessment framework",
+        "module_2": "Your business case examples",
+        "module_7": "Full consulting engagement deliverable"
+      }
+    }
+  ],
+  "specializations": [
+    {
+      "id": "spec_agentic",
+      "name": "Agentic Evaluation & Deployment",
+      "duration_weeks": 3,
+      "audience": "After Track 2+",
+      "topics": ["Agent metrics", "Multi-step reasoning eval", "Cost optimization for agents"]
+    },
+    {
+      "id": "spec_data_arch",
+      "name": "Data Architecture for AI",
+      "duration_weeks": 3,
+      "audience": "After Track 2+",
+      "topics": ["Data mesh", "Feature stores", "Real-time pipelines"]
+    },
+    {
+      "id": "spec_industry",
+      "name": "Industry-Specific AI (Healthcare, Finance, Retail, Enterprise)",
+      "duration_weeks": 2,
+      "audience": "After Track 1+",
+      "topics": ["Domain-specific NLP", "Compliance", "ROI patterns"]
+    },
+    {
+      "id": "spec_mlops",
+      "name": "MLOps/LLMOps for Scale",
+      "duration_weeks": 4,
+      "audience": "After Track 2+",
+      "topics": ["Feature pipelines", "Model serving", "Cost attribution"]
+    },
+    {
+      "id": "spec_prompts",
+      "name": "Prompt Engineering at Scale",
+      "duration_weeks": 2,
+      "audience": "After Track 1+",
+      "topics": ["Prompt optimization", "Registry & governance", "Defense against injection"]
+    }
+  ],
+  "integration_lab": {
+    "id": "integration_capstone",
+    "name": "Cross-Track Integration Lab",
+    "duration_weeks": 4,
+    "when": "After Track 3",
+    "description": "Integrate Tracks 1-3 into one production system",
+    "phases": [
+      {
+        "name": "Assessment",
+        "weeks": 1,
+        "deliverable": "10-page assessment + risk analysis"
+      },
+      {
+        "name": "Architecture",
+        "weeks": 1,
+        "deliverable": "Architecture diagram + tech stack justification"
+      },
+      {
+        "name": "Build & Deploy",
+        "weeks": 2,
+        "deliverable": "Production system + cost dashboard"
+      }
+    ]
+  },
+  "delivery_models": [
+    {
+      "format": "Self-Paced",
+      "duration_multiplier": 1.0,
+      "structure": "Videos + async labs + office hours 2x/week",
+      "ideal_for": "Working professionals"
+    },
+    {
+      "format": "Cohort-Based (Weekly)",
+      "duration_multiplier": 0.75,
+      "structure": "Weekly live sessions + labs + peer learning",
+      "ideal_for": "Structured learners"
+    },
+    {
+      "format": "Full-Day Intensive",
+      "duration_multiplier": 0.5,
+      "structure": "1-day or multi-day boot camps",
+      "ideal_for": "Accelerated learning, teams"
+    },
+    {
+      "format": "Hybrid",
+      "duration_multiplier": 0.85,
+      "structure": "Intensive workshops + async work between",
+      "ideal_for": "Flexibility + structure"
+    }
+  ],
+  "career_pathways": [
+    {
+      "name": "Full-Stack AI Engineer",
+      "tracks": ["Track 1", "Track 2", "Track 3"],
+      "specializations": ["Spec: MLOps OR Spec: Data Architecture"],
+      "capstone": "Enterprise AI system design + deployment",
+      "timeline_weeks": 24,
+      "target_role": "Senior AI Engineer",
+      "target_salary": "$140-180K"
+    },
+    {
+      "name": "AI Solutions Consultant",
+      "tracks": ["Track 1", "Track 2 (accelerated)", "Track 3", "Track 4"],
+      "specializations": ["Spec: Industry-Specific"],
+      "capstone": "Real client engagement",
+      "timeline_weeks": 28,
+      "target_role": "Solutions Architect / AI Consultant",
+      "target_salary": "$150-200K"
+    },
+    {
+      "name": "AI Startup Founder",
+      "tracks": ["Track 1", "Track 2", "Track 3 (selective)"],
+      "specializations": ["Spec: Data Architecture", "Spec: Industry-Specific"],
+      "capstone": "AI product pitch deck + MVP",
+      "timeline_weeks": 20,
+      "target_role": "Founder / Product Manager",
+      "target_salary": "$120K+ (equity)"
+    }
+  ],
+  "instructor_templates": [
+    {
+      "template_id": "module_lesson_plan",
+      "filename": "TEMPLATE_MODULE_LESSON_PLAN.md",
+      "usage": "Use for each module outline"
+    },
+    {
+      "template_id": "lab_assignment",
+      "filename": "TEMPLATE_LAB_ASSIGNMENT.md",
+      "usage": "Use for each hands-on lab"
+    },
+    {
+      "template_id": "capstone_brief",
+      "filename": "TEMPLATE_CAPSTONE_BRIEF.md",
+      "usage": "Use for capstone projects"
+    },
+    {
+      "template_id": "grading_rubric",
+      "filename": "TEMPLATE_GRADING_RUBRIC.md",
+      "usage": "Use for consistent grading"
+    }
+  ],
+  "assessment_criteria": {
+    "module_completion": {
+      "attendance": "85%+ (self-paced: completed by deadline)",
+      "labs": "70%+ average",
+      "capstone": "75%+ score"
+    },
+    "capstone_rubric": {
+      "beginner": {
+        "functionality": "System works, solves stated problem",
+        "code_quality": "Clean, documented, tested",
+        "documentation": "Clear, 5+ pages, implementation guide",
+        "presentation": "Explains approach, defends choices"
+      },
+      "advanced": {
+        "functionality": "Production-ready, scalable, monitored",
+        "code_quality": "Professional grade, tested, optimized",
+        "documentation": "Comprehensive, 15+ pages, case study",
+        "presentation": "Strategic presentation, handles criticism"
+      }
+    }
+  },
+  "portfolio_showcase": {
+    "strategy": "Embed real client work as case studies throughout",
+    "sanitization": "Anonymize company names, remove sensitive data",
+    "case_studies": [
+      {
+        "module": "Track 1, M1",
+        "title": "Why AI Mattered: Client ROI Impact",
+        "sections": ["Problem", "Solution", "Results", "Lessons"]
+      },
+      {
+        "module": "Track 2, M4",
+        "title": "Building Production RAG System",
+        "sections": ["Architecture", "Implementation", "Cost optimization", "Results"]
+      },
+      {
+        "module": "Track 3, M9",
+        "title": "Enterprise AI Transformation",
+        "sections": ["Assessment", "Design", "Implementation", "Results", "Learnings"]
+      },
+      {
+        "module": "Track 4, M7",
+        "title": "Full Consulting Engagement",
+        "sections": ["Scope", "Approach", "Deliverables", "Impact", "ROI"]
+      }
+    ]
+  },
+  "success_metrics": {
+    "student_outcomes": {
+      "completion_rate": "85%+",
+      "avg_capstone_score": "82%+",
+      "job_placement_3mo": "70%+",
+      "avg_salary_improvement": "30%+",
+      "satisfaction": "4.5/5 stars"
+    },
+    "program_metrics": {
+      "cost_per_student_delivery": "<$500",
+      "revenue_per_student_self_paced": "$2-5K",
+      "revenue_per_student_cohort": "$5-10K",
+      "alumni_referral_rate": "30%+"
+    },
+    "instructor_outcomes": {
+      "portfolio_case_studies": "15-20",
+      "speaking_opportunities": "3+/year",
+      "network_growth": "Strong alumni community"
+    }
+  },
+  "timeline_example": {
+    "cohort_1_launch": "2026-Q1",
+    "phase_1_completion": "Track 1-2 fully built + 2 instructors trained",
+    "phase_2_launch": "2026-Q2",
+    "phase_2_completion": "Track 3-4, Specializations ready",
+    "scale_phase": "2026-Q3+",
+    "scale_targets": "3-4 concurrent cohorts, 50+ students/quarter"
+  },
+  "next_steps": [
+    "Build Track 1 fully (2 weeks)",
+    "Build Track 2 fully (3 weeks)",
+    "Record 20-min intro videos (2 weeks)",
+    "Launch beta cohort (Track 1-2, 5-10 students)",
+    "Iterate based on feedback",
+    "Build Track 3-4",
+    "Hire/train instructors",
+    "Scale marketing and enrollment"
+  ]
+}

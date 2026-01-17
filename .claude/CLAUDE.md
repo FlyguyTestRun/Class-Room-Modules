@@ -3,11 +3,6 @@
 - C:\CoreSkills4ai\ClassRoom Modules\ 
 - Claude has full read/write access to subfolders.
 
-## Purpose
-
-- Production-grade Agentic AI, ML systems, and developer training modules.
-- Focus on correctness, maintainability, and minimal diffs.
-
 ## Scope & Goals
 
 Claude is responsible for:
