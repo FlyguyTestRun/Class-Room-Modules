@@ -12,13 +12,13 @@
       "name": "AI Foundations for Everyone",
       "target_audience": ["Non-technical", "Business owners", "Career switchers"],
       "prerequisite": "None",
-      "duration_weeks": 5,
+      "duration_weeks": 2,
       "intensity": {
-        "self_paced_hours": 20,
-        "full_day_intensive_hours": 20,
+        "self_paced_hours": 40,
+        "full_day_intensive_hours": 6,
         "full_day_intensive_days": 1
       },
-      "modules": 5,
+      "modules": 8,
       "progression": "Beginner → Intermediate → Advanced",
       "capstone_type": "Simple AI workflow → Production AI governance",
       "cert_alignment": ["NIST AI RMF (Optional M4-5)"],
@@ -45,7 +45,7 @@
         "full_day_intensive_hours": 40,
         "full_day_intensive_days": 2
       },
-      "modules": 7,
+      "modules": 8,
       "progression": "Beginner → Advanced",
       "capstone_type": "RAG App → Enterprise RAG System",
       "cert_alignment": [
@@ -68,12 +68,12 @@
     {
       "id": "track_3",
       "name": "Enterprise Integration",
-      "target_audience": ["Mid-level engineers", "Tech leads", "Architects"],
+      "target_audience": ["Mid-level engineers", "Tech leads"],
       "prerequisite": "Track 2",
-      "duration_weeks": 12,
+      "duration_weeks": 2,
       "intensity": {
         "self_paced_hours": 50,
-        "full_day_intensive_hours": 50,
+        "full_day_intensive_hours": 30,
         "full_day_intensive_days": 2.5
       },
       "modules": 9,
@@ -101,7 +101,7 @@
       "name": "Consulting Mastery",
       "target_audience": ["Engineers→Consultants", "Tech leads"],
       "prerequisite": "Track 3",
-      "duration_weeks": 8,
+      "duration_weeks": 2,
       "intensity": {
         "self_paced_hours": 30,
         "full_day_intensive_hours": 30,

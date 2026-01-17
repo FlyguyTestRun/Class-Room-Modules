@@ -57,7 +57,7 @@ Additional Module idea Please add the following. Either integrate them into an e
 
 ---
 
-## Application Frameworks & Runtimes
+### Application Frameworks & Runtimes
 - *Spring Boot* (WebFlux) Solid but usually trails in raw req/s; *WebFlux* (reactive) closes the gap.Language: Java
 		*Performance:* Solid and scalable in production (handles massive enterprise loads), but classic mode trails async leaders in raw req/s benchmarks. WebFlux narrows the gap significantly. Very good at sustained high load with JVM optimizations (JIT).
 		*Benefits:*
@@ -263,7 +263,7 @@ Let the Studuents choose from man resources.
 
 ---
 
-## PART B: ENGINEERING (Junior → Senior)
+## PART B: ENGINEERING 
 
 ### 8. Model Selection & Evaluation
 - **Benchmarks:** How to compare models (MMLU, HumanEval, etc.)
@@ -302,7 +302,7 @@ Let the Studuents choose from man resources.
 - **Real examples:** Routing to Claude vs. GPT vs. Llama
 
 ### 13. Vector Databases & Search
-- **Types:** Pinecone, Weaviate, Milvus, FAISS
+- **Types:** Pinecone, Weaviate, Milvus, FAISS, Chroma
 - **Operations:** Index, search, update, delete at scale
 - **Optimization:** Chunking, metadata filtering, hybrid search
 - **Cost:** Storage, compute, query costs per operation
@@ -317,7 +317,7 @@ Let the Studuents choose from man resources.
 
 ---
 
-## PART C: ADVANCED SYSTEMS (Architects, Tech Leads)
+## PART C: ADVANCED SYSTEMS 
 
 ### 15. Agentic Systems at Scale
 - **Memory:** Long-term, short-term, persistent memory architectures
@@ -375,7 +375,7 @@ Let the Studuents choose from man resources.
 ## PART D: BUSINESS & CONSULTING
 
 ### 22. Customer Assessment & ROI
-- **Readiness frameworks:** Is a company ready for AI?
+- **Readiness frameworks:** Is a company ready for AI? Whats the overall scope? How does the data look? Where is it currently stored? 
 - **ROI models:** How to calculate financial impact
 - **Risk assessment:** Technical, organizational, financial risks
 - **Competitive analysis:** What AI unlocks vs. competitors

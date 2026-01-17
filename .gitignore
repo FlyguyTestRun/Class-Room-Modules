@@ -36,11 +36,18 @@ nul
 # Claude working files
 .claude/logs/
 .claude/settings.local.json
+.claude
+
 
 # Personal/Career files
 INTERVIEW_PREP.md
 LINKEDIN_POST.md
 PORTFOLIO_PRESENTATION.md
+Shaw_Objectives.md
+2026_ESSENTIAL_AI_TOPICS.md
+COMPLETED_TASKS.md
+SESSION_3_PLAN.md
+
 
 # Legacy/backup files
 *_old.py
@@ -58,3 +65,6 @@ SETUP_INSTRUCTIONS.md
 TODO.md
 NEXT_STEPS.md
 FILES_TO_REMOVE.md
+
+# Folders for local use only
+automation
