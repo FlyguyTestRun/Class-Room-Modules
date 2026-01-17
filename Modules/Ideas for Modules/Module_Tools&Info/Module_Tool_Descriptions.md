@@ -1,4 +1,4 @@
-# Comprehensive Technology & Platform Summary
+# Technology & Platforms
 ## CoreSkills4ai - Training Coverage
 This document serves as a curated, in-depth reference for the technologies, platforms, and tools essential for building full-stack AI systems in 2026. As part of the CoreSkills4ai curriculum, modules provide instructor-led classroom and self-paced access to virtual machine (VM) environments encompassing a broad range of modern AI, infrastructure, and DevOps tooling.
 
@@ -81,18 +81,18 @@ In addition to code-first development, the curriculum evaluates no-code and low-
 
 ## Operating Systems & Directory Services
 
-- **Windows Server**: Robust OS for on-premises servers, supporting Hyper-V for virtualized ML workloads.
-- **Active Directory Domain Services (AD DS / ADDS)**: Directory for managing AI user access, integrating with Azure AD for hybrid identity.
+- **Windows Server**: OS for on-premises servers, supporting Hyper-V for virtualized workloads.
+- **Active Directory Domain Services (AD DS / ADDS)**: Directory for managing user access, integrating with Azure AD for hybrid identity.
 - **On-Premises Domain Controllers**: Hybrid identity for systems, ensuring seamless on-cloud/off-cloud access.
 
 ---
 
 ## Virtualization & Infrastructure
 
-- **VMware vSphere**: Enterprise virtualization for workloads, with GPU passthrough for deep learning.
-- **Microsoft Hyper-V**: Built-in Windows hypervisor for ML VMs, cost-effective for Microsoft stacks.
+- **VMware vSphere**: Enterprise virtualization GPU passthrough for deep learning.
+- **Microsoft Hyper-V**: Built-in Windows hypervisor for VMs, cost-effective for Microsoft stacks.
 - **Hyper-Converged Infrastructure (HCI)**: Integrated compute/storage for scalablity, reducing latency in data-heavy tasks.
-- **Failover Clustering**: High availability for production ML, ensuring no downtime during model serving.
+- **Failover Clustering**: High availability for production, ensuring no downtime during model serving.
 - **CloudShare**: Cloud labs for CoreSkills training environments, ideal for prototyping without local hardware, using VMs. 
 
 ---
@@ -104,7 +104,7 @@ In addition to code-first development, the curriculum evaluates no-code and low-
 ---
 
 ## Programming Languages
-🔹 Languages form the backbone of AI code. Below is a 2026 performance comparison (from TechEmpower Round 23), with Rust leading in throughput for concurrency.
+🔹 The backbone of AI code. Below is a 2026 performance comparison with Rust leading in throughput for concurrency.
 
 | Aspect                  | Rust (Axum/Actix)              | Node.js                  | .NET (ASP.NET Core)      | Spring Boot (Java)       |   FastAPI (Python)           |
 |-------------------------|--------------------------------|--------------------------|--------------------------|--------------------------|--------------------------|
@@ -119,7 +119,7 @@ In addition to code-first development, the curriculum evaluates no-code and low-
 
 - **Java**: (Spring Boot for Enterprise) Versatile for enterprise AI; strong typing for large-scale integrations.
 - **C#**: (.NET for Enterprise) Efficient for Microsoft stacks; excels in type-safe AI services.
-- **Python**: (FastAPI) Dominant for ML; easy scripting for data pipelines.
+- **Python**: (FastAPI) Dominant for easy scripting for data pipelines.
 - **Rust**: General-purpose systems language with C/C++ performance and memory safety. Compiles to native code (no VM/GC), no garbage collector, zero-cost abstractions (high-level features without runtime cost).
 
   **Performance**: Consistently tops benchmarks; raw throughput often #1–#5, outperforming Node.js in CPU-bound scenarios, low latency/multi-core scaling.
@@ -139,7 +139,7 @@ In addition to code-first development, the curriculum evaluates no-code and low-
     - Verbosity in some cases — Safe code can require more explicit handling (lifetimes, Arc/Mutex for shared state).
     - Less "batteries-included" — Frameworks are lightweight; more composition required (Tokio + tower + serde + sqlx/etc.) compared to Spring Boot or FastAPI.
 
-  📚 **Beginner Note**: Rust is like a "super-safe toolbox" for building software— it prevents common mistakes (like forgetting to lock a door) at the design stage, making your programs faster and more reliable than traditional tools like C++.
+  📚 **Beginner Note**: Rust is like a "super-safe toolbox" for building software it prevents common mistakes (like forgetting to lock a door) at the design stage, making your programs faster and more reliable than traditional tools like C++.
 
 *Added*: Go (for scalable AI services; simple concurrency), TypeScript (for JS AI apps; type safety).
 
