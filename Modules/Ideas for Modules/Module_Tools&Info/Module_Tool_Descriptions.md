@@ -50,7 +50,7 @@ In addition to code-first development, the curriculum evaluates no-code and low-
 
 ---
 
-## Microsoft Enterprise & Identity Ecosystem
+## Microsoft Enterprise & Identity Ecosystem & Agnostic Alternatives
 - The following enterprise productivity, identity, and device management platforms are referenced at a foundational level within the curriculum. While not primary development targets, they represent common enterprise environments that agentic AI systems must securely integrate with, observe, or operate alongside in real-world deployments.
 
 - **Microsoft 365**: primary enterprise productivity ecosystem, enabling agentic AI systems to interact with organizational documents, communications, calendars, and workflows via APIs and event-driven automation.
@@ -71,6 +71,7 @@ In addition to code-first development, the curriculum evaluates no-code and low-
 - **Multifactor Authentication (MFA)**: Provides an additional security layer for high-risk actions, privileged operations, and sensitive workflows.
 
 ---
+
 ### Device & Endpoint Management
 
 - **Microsoft Intune**: Device Compliance and policy enforcement that may influence agent behavior or access decisions.
