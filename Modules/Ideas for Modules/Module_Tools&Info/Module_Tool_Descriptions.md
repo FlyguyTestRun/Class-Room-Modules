@@ -1006,11 +1006,13 @@ Unlike LangChain's flexible chaining or LlamaIndex's data-centric indexing focus
 # Terms:
 PaaS - Platform as a Service
 SaaS - Software as a Service
-**iPaaS** - Integration Platform as a Service (Middleware platforms that simplify connecting multiple enterprise systems. **(Zapier/Make/Boomi for integrations)**
+**iPaaS** - Integration Platform as a Service Middleware platforms that simplify connecting multiple enterprise systems. **(Zapier/Make/Boomi for integrations)**
 
 ##### ERP** - Enterprise Resource Planning
 - Core enterprise systems that manage inventory, procurement, maintenance, finance, and operations.
  - Pushes **predictive alerts** into customer workflows
  - Creates or updates **work orders**
  - Triggers **procurement** and inventory checks
-)
+
+
+*My last edit # 3:45AM - Bryan S.*
