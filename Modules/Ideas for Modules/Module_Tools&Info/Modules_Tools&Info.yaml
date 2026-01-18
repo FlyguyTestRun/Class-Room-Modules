@@ -1,0 +1,68 @@
+
+---
+
+# FILE 7 — `INSTRUCTOR_GUIDE/README.md`
+
+```markdown
+# Instructor Guide — CoreSkills4AI
+
+## Role of the Instructor
+
+You are not teaching tools.
+You are teaching **engineering judgment**.
+
+Students should leave able to:
+- Explain trade-offs
+- Defend constraints
+- Diagnose failures
+- Estimate cost and risk
+
+---
+
+## Teaching Model
+
+Each module follows a consistent flow:
+
+1. Conceptual framing
+2. Failure case analysis
+3. Guided lab
+4. Reflection & justification
+
+---
+
+## What NOT to Do
+
+- Do not rush into coding
+- Do not optimize for novelty
+- Do not allow unchecked automation
+
+---
+
+## Assessment Philosophy
+
+- Written explanations matter as much as working code
+- Partial solutions with strong reasoning score highly
+- Over-engineering is penalized
+
+---
+
+## Delivery Modes
+
+- Instructor-led cohort
+- Self-paced professional study
+- Enterprise internal training
+
+---
+
+## Required Instructor Skills
+
+- Comfort saying “it depends”
+- Ability to challenge assumptions
+- Familiarity with enterprise constraints
+- Experience with real-world failures
+- Strong communication skills
+- Patience for iterative learning
+- Commitment to student growth
+- Willingness to adapt to diverse learning styles
+- Knowledge of current AI tool trends
+- Ability to facilitate discussions on ethics and responsibility

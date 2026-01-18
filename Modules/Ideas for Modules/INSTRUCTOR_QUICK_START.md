@@ -1,4 +1,9 @@
-# CoreSkills4ai - Instructor Quick Start
+# CoreSkills4ai - Instructor Bryan Shaw
+
+## Module designed on two week Virtual Machine
+-   Clients will have 24 hour access to a sandbox enviorment for the 2 Week long modules. 
+-   Students may require access for longer periods of time. 
+-   If they are going to want to save work explain containers & repositories first. (I will use GitHub to initialize every Module)
 
 **Get up to speed in 30 minutes.** This is your teaching playbook.
 
@@ -7,13 +12,13 @@
 ## YOUR ROLE
 
 You're teaching production-grade AI skills. Your students will:
-- **Beginners:** Understand AI fundamentals, build first projects
+- **Beginners:** Understand AI fundamentals, build projects
 - **Advanced:** Design enterprise systems, mentor others
 
 You provide:
 - **Structure:** Clear learning path, labs, feedback
 - **Mentorship:** Why decisions matter, real-world context
-- **Validation:** Grading, code review, career guidance
+- **Validation:** Grading, code review, guidance
 
 ---
 
@@ -25,7 +30,7 @@ You provide:
 - Then teach the solution
 - Students build proof-of-concept, iterate, optimize
 
-**"Your real work is the best teacher."**
+**"Your real world experience is the best teacher."**
 - Your client projects are case studies
 - Share lessons learned, mistakes, what you'd do differently
 - Show the messy, real engineering (not just final polish)
@@ -34,10 +39,10 @@ You provide:
 
 ## BEFORE YOUR FIRST CLASS
 
-### 1. Read the Syllabus (30 min)
+### 1. Read the Syllabus (15 min)
 - [ ] Skim Track 1-2 syllabi (shows progression)
 - [ ] Deep dive into your assigned module
-- [ ] Understand beginner vs. advanced tracks
+- [ ] Beginner vs. advanced tracks (understand audience)
 
 ### 2. Review the Config (10 min)
 - [ ] Open `coreskills4ai_config.json`
@@ -49,52 +54,56 @@ You provide:
 - [ ] Find your module's topics
 - [ ] Ensure you're covering everything important
 
-### 4. Gather Your Materials (20 min)
+### 4. Gather Your Materials (10 min)
 - [ ] Find template files (lesson plan, lab, capstone)
-- [ ] Check your portfolio case studies (yours to use)
+- [ ] Check portfolio case studies (yours to use)
 - [ ] Collect code samples, datasets, tools
 
-**Total prep time:** 1.5 hours before first class.
+**Total prep time:** 1 hour before first class.
 
 ---
 
 ## TEACHING STRUCTURE (Per Module)
 
-### Week 1: Foundation
+### Day 1: Foundation
 **Goal:** Students understand the "why."
 
 **Format:**
-1. **Live Session (30 min):** Lecture + demo + Q&A
-2. **Lab (30 min):** Hands-on coding, instructor circulates
+1. **Live Session (30~45 min):** Introductions, Lecture + Q&A
+2. **Lab (30 min):** Hands-on coding, demo, instructor circulates
 3. **Homework:** Read, watch video, start assignment
 
 **Your role:**
 - Make it concrete (show a real problem, show how AI solves it)
-- Engage beginners (no heavy math, lots of examples)
-- Challenge advanced (stretch with optimization, edge cases)
+- Engage beginners (no heavy math, lots of examples, low to no coding here)
+- Challenge advanced (stretch with optimization, edge cases, challenge strategies, tools and implementations) 
 
-### Week 2: Building
+### Day 2: Building
 **Goal:** Students build something real.
 
 **Format:**
 1. **Lab Review (15 min):** Common mistakes from homework
 2. **Advanced Topics (15 min):** Deeper concepts
-3. **Lab Extension (30 min):** Build on week 1
-4. **Code Review:** Pair-program with students
+3. **Lab Extension (30 min):** Build on Day 2
+4. **Code Review:** Pair-program with students ability. Gauge from day 1 concept understanding. 
 
 **Your role:**
 - Debug errors (guide, don't just fix)
 - Share optimization insights (this is where experience matters)
 - Push advanced students (can you do this differently?)
+    - Modules will be set up with optional tools and designed to take different paths for comparing results. 
+    - Modules will include a simple path with optional challenges. 
 
-### Week 3: Capstone Prep
-**Goal:** Students plan their capstone.
+### Day 3: Capstone Prep
+**Goal:** Introduce capstone project for the final 
 
 **Format:**
-1. **Case Study (20 min):** Your portfolio project
-2. **Framework (20 min):** How to scope capstone
-3. **Lab:** Students design their project
+1. **Case Study (25 min):** Portfolio projects metioned and (mock) real-world problems. 
+- Depending on clients needs and desires they can cater the projects to their current real-world issues if applicable to module.
+2. **Framework (25 min):** How to scope capstone
+3. **Lab: (3 hours)** Students design their project
 4. **Feedback:** You give written feedback on design
+5. **Homework:** Feed back drives afternoon session and labwork
 
 **Your role:**
 - Tell your story (What problem did you solve? How?)
@@ -132,16 +141,16 @@ You provide:
 
 ## COMMON TEACHING PATTERNS
 
-### Pattern 1: "Show-Then-Do" (20 min)
-1. **Show:** Live code demo (5 min)
-2. **Explain:** Why we did it this way (3 min)
+### Pattern 1: "Show-Then-Do" (30 min)
+1. **Show:** Live code demo (10 min)
+2. **Explain:** Why we did it this way (5 min)
 3. **Do:** Students implement (10 min)
-4. **Debrief:** Lessons, edge cases (2 min)
+4. **Debrief:** Lessons, edge cases (5 min)
 
-### Pattern 2: "Problem-First" (25 min)
-1. **Problem:** "This system costs $10K/month. How do we optimize?" (2 min)
+### Pattern 2: "Problem-First" (30 min)
+1. **Problem:** "This system costs $10K/month. How do we optimize?" (5 min)
 2. **Brainstorm:** Students suggest solutions (5 min)
-3. **Teach:** Here's what actually works + why (8 min)
+3. **Teach:** Here's what actually works + why (10 min)
 4. **Build:** Students implement the solution (10 min)
 
 ### Pattern 3: "Code Review" (15 min)
@@ -156,10 +165,10 @@ You provide:
 
 ### Beginner Cohort
 - **Pace:** Slower, more examples, visuals
-- **Math:** Avoid heavy math, focus on intuition
-- **Scaffolding:** Provide more code templates
+- **Math:** Avoid coding, heavy concepts, focus on intuition
+- **Scaffolding:** Provide more code templates, no/low - code options
 - **Wins:** Celebrate every working prototype
-- **Questions:** No question is dumb, encourage them
+- **Questions:** No question is dumb, content for improving classroom
 
 ### Advanced Cohort
 - **Pace:** Faster, less hand-holding

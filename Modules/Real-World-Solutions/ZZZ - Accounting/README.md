@@ -20,7 +20,17 @@ This training module simulates a real-world M&A data integration scenario. **ZZZ
 | **AAA Accounting** | Target acquisition (15 years of messy legacy data) | Needs cleaning |
 | **BBB Construction** | Optional exercise (different schema patterns) | JSON/UUID practice |
 
-### The Real-World Problem
+### The Real-World Problem 
+*Mock*
+1. **AAA Accounting** - ZZZ Finacial just acquired a small accounting firm with 15 years of disorganized client data, seperate accounting programs and a completly different SaaS tech-stack. ZZZ wants to organize thier data and shift them away from thier expensive CRM tool and over to thier PaaS system. Merging thier data into a similar structure and eliminate the disoganization and restructure it similar to ZZZ (more profesioinal) data managment style. During this acqusition ZZZ would like to integrate some new AI features into thier PaaS system. They would like to have AI help with thier book keeping work and know some good tools to use to help with this integration. ZZZ does have a data managment team but looking for us to come in and help them consult with this project. 
+
+The challenge? Each company has:
+- Different database systems (ZZZ Azure Database SQL, Systems Engineer, but NO Dev Team that is why they need us),  <Need Accounting Programs to consider>, 
+- Different data formats
+- Duplicate clients
+- YYY with Messy, inconsistent data
+- Documents scattered everywhere, need organization and restrucure. 
+- During this transition phase AAA 
 
 AAA Accounting's legacy system has:
 - Poor naming conventions (`cust_master`, `CUST_NUM`)
@@ -39,6 +49,7 @@ Build an integration platform that:
 4. **Creates** an AI knowledge base using RAG
 5. **Provides** MCP tools for Claude integration
 6. **Delivers** a React dashboard for the team
+
 
 ---
 

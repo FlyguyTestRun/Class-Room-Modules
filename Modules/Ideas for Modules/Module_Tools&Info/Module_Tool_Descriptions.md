@@ -979,7 +979,6 @@ Unlike LangChain's flexible chaining or LlamaIndex's data-centric indexing focus
 - Combining with Hugging Face open models for cost-effective, high-accuracy setups.
 - Pipelines needing observability (*deepset Studio + MLflow + LangSmith*).
 
-# Vendor-Agnostic Curriculum Options.
 ## Document Management & Knowledge Repositories
 - SharePoint Equivalents for free/low-cost alternatives with API/ingestion support for RAG. Loaders in Haystack/Langchain/LlamaIndex.
 
