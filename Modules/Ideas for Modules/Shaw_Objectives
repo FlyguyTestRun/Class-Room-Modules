@@ -60,7 +60,6 @@ Students begin with relational databases and ORMs, introduce vector storage for 
 
 *Added*: Airflow, Prefect, Dagster—for scheduling and monitoring ML pipelines.
 
-
 *Your stack fit (Azure, Microsoft ecosystem, Python/ML, Java/C# experience) → .NET or FastAPI often win for new projects; Spring Boot for heavy enterprise Java needs.*
 
 **Quick Recommendations for Your Portfolio (Bryan, Arlington/Texas/Azure Focus)**
