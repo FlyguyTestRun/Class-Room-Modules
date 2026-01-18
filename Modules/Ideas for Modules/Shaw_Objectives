@@ -59,3 +59,14 @@ Students begin with relational databases and ORMs, introduce vector storage for 
 - **CI/CD Pipelines**: GitHub Actions for automated ML deployments.
 
 *Added*: Airflow, Prefect, Dagster—for scheduling and monitoring ML pipelines.
+
+
+*Your stack fit (Azure, Microsoft ecosystem, Python/ML, Java/C# experience) → .NET or FastAPI often win for new projects; Spring Boot for heavy enterprise Java needs.*
+
+**Quick Recommendations for Your Portfolio (Bryan, Arlington/Texas/Azure Focus)**
+- **Easiest & most impressive**: Any API (FastAPI, ASP.NET Core Minimal API) → OpenAPI spec → Azure APIM import → share developer portal with auth & rate limiting.
+- **Open-source showcase**: Kong or Tyk self-hosted in Docker → document plugins & observability.
+- **Multi-cloud bonus**: Kong (supports Azure/AWS/GCP) to show flexibility beyond pure Azure.
+- **Zero/low cost**: All have generous free tiers or open-source options; pair with Postman collections for testing.
+
+These additions emphasize production-grade API exposure, security, and discoverability — exactly what stands out in technical portfolios and enterprise interviews.
